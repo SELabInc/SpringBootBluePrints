@@ -1,0 +1,33 @@
+server:
+  compression:
+    enabled: true
+  error:
+    include-exception: true
+    include-stacktrace: always
+    whitelabel:
+      enabled: true
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: logs/
+    basedir: /springbootblueprints-log/tomcat
+  servlet:
+    context-path: /
+  port: 8000
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.100.2:3306/LivingLabDB?serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: selabdev
+    password: qhdkscjfwj!@
+    driver-class-name: org.mariadb.jdbc.Driver
+    
+  jpa:
+    hibernate:
+      jdbc:
+        time_zone: UTC
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  thymeleaf:
+    cache: false

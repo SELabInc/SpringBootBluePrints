@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Error</title>
+
+    <th:block th:replace="~{fragments/layout/commonHead}"></th:block>
+
+</head>
+
+<body class="">
+
+<div class="container">
+    <div class="text-center">
+        <div class="error mx-auto" th:data-text='${status}' th:text="${status}">http status</div>
+
+        <p class="lead text-gray-800 mb-2" th:text="${error}">error</p>
+        <p class="text-gray-500 mb-5" th:text="${message}">massage</p>
+        <a href="/">&larr; 메인으로 돌아가기</a>
+
+        <div th:if="${trace != null}" class="my-5 p-3 card text-left text-gray-500 bg-gray-100">
+            <h5>
+                Trace
+                <span class="small text-gray-400" th:text='${"path: "+path}'></span>
+            </h5>
+            <p class="pl-2" th:text="${exception}"></p>
+            <p class="pl-2" th:text="${trace}"></p>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments/layout/commonScript}"></th:block>
+
+</body>
+
+</html>
