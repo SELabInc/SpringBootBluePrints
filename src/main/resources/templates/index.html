@@ -2,26 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
+
+<th:block layout:fragment="headContentBeforeThemeStyle">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" th:href="@{vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{vendor/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{vendor/jqvmap/jqvmap.min.css}">
+</th:block>
 <head>
-    <meta charset="utf-8">
     <title>Sample</title>
 
-    <th:block layout:fragment="headContent">
-        <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-        <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" th:href="@{/vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
-        <!-- iCheck -->
-        <link rel="stylesheet" th:href="@{/vendor/icheck-bootstrap/icheck-bootstrap.min.css}">
-        <!-- JQVMap -->
-        <link rel="stylesheet" th:href="@{/vendor/jqvmap/jqvmap.min.css}">
-        <!-- overlayScrollbars -->
-        <link rel="stylesheet" th:href="@{/vendor/overlayScrollbars/css/OverlayScrollbars.min.css}">
-        <!-- Daterange picker -->
-        <link rel="stylesheet" th:href="@{/vendor/daterangepicker/daterangepicker.css}">
-        <!-- summernote -->
-        <link rel="stylesheet" th:href="@{/vendor/summernote/summernote-bs4.min.css}">
-    </th:block>
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{vendor/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{vendor/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{vendor/summernote/summernote-bs4.min.css}">
 </head>
 <body>
 
@@ -655,7 +655,6 @@
         })
     </script>
 </th:block>
-
 
 <th:block layout:fragment="pageCustomCss">
 

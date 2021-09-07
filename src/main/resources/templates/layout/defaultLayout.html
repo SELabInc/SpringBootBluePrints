@@ -3,18 +3,13 @@
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">BLUE PRINTS</title>
-
-	<th:block layout:fragment="headContent"></th:block>
-
 	<!-- 공통 css, js, meta tag -->
-	<th:block th:replace="~{fragments/layout/commonHead}"></th:block>
+	<th:block th:include="~{fragments/layout/commonHead}"></th:block>
 
-	<!-- 공통 javascript -->
-	<th:block th:replace="~{fragments/layout/commonScript}"></th:block>
-
+	<th:block layout:fragment="headContentBeforeThemeStyle"></th:block>
+	<!-- Theme style -->
+	<link rel="stylesheet" th:href="@{/vendor/admin-lte/css/adminlte.min.css}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -59,6 +54,9 @@
 	<!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- 공통 javascript -->
+<th:block th:replace="~{fragments/layout/commonScript}"></th:block>
 
 <!-- page content javascript -->
 <th:block layout:fragment="pageCustomScript"></th:block>
