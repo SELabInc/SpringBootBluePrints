@@ -23,7 +23,7 @@ public class IndexController {
     @RequestMapping("/")
     public String getRoot() {
 
-        return "root";
+        return "index";
     }
 
     @GetMapping("/signUp")
