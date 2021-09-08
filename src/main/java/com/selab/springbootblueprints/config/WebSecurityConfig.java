@@ -25,21 +25,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         
         http.authorizeRequests()
-        	.antMatchers("/", "/signIn", "/signUp", "/accessDenied", "/api/**").permitAll()
+        	.antMatchers("/", "/login", "/register", "/accessDenied", "/api/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/**").permitAll()
         	.antMatchers("/**").authenticated()
         .and()
         	.csrf().ignoringAntMatchers("/api/**")
         .and()
             .formLogin()
-            .loginPage("/signIn")
+            .loginPage("/login")
             .defaultSuccessUrl("/")
-            .failureForwardUrl("/signIn")
+            .failureForwardUrl("/login")
             .usernameParameter("username")
         .and()
             .logout()
-            .logoutUrl("/signOut")
-            .logoutSuccessUrl("/signIn")
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/register")
             .invalidateHttpSession(true);
     }
     

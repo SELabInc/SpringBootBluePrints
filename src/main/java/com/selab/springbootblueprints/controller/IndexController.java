@@ -26,13 +26,13 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/signUp")
+    @GetMapping("/register")
     public void getSignUp(Model model) {
 
     }
 
     @ResponseBody
-    @PostMapping("/signUp")
+    @PostMapping("/register")
     public ResponseEntity<Integer> postUser(String username, String password) {
         int resultValue = 0;
 

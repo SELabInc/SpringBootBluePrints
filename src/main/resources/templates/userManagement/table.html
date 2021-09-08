@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="~{layout/defaultLayout}">
+      layout:decorate="~{layout/frameFixedLayout}">
 <head>
     <meta charset="utf-8">
     <title>User Management</title>
 </head>
 <body>
-
-<th:block layout:fragment="content">
-    <div class="container-fluid">
-
+    <th:block layout:fragment="bodyContentHeader">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">User Management</h1>
-
         </div>
+    </th:block>
 
+    <th:block layout:fragment="bodyContent">
         <div class="card shadow mb-4">
             <!-- Card Header -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -74,19 +72,16 @@
                 </div>
             </div>
         </div>
-    </div>
+    </th:block>
 
+    <th:block layout:fragment="pageCustomScript">
+        <script>
+            $(document).ready(function () {
 
-</th:block>
+            })
 
-<th:block layout:fragment="pageCustomScript">
-    <script>
-        $(document).ready(function () {
-
-        })
-
-    </script>
-</th:block>
+        </script>
+    </th:block>
 
 
 <th:block layout:fragment="pageCustomCss">

@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @SuppressWarnings("EmptyMethod")
 public class LoginController {
 
-    @GetMapping("/signIn")
+    @GetMapping("/login")
     public void getSignIn() {
 
     }
 
-    @GetMapping("/signOut")
+    @GetMapping("/logout")
     public void getSignOut() {
 
     }
