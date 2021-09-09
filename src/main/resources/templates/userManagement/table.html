@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/frameFixedLayout}">
+<head>
+    <meta charset="utf-8">
+    <title>User Management</title>
+</head>
+<body>
+    <th:block layout:fragment="bodyContentHeader">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">User Management</h1>
+        </div>
+    </th:block>
+
+    <th:block layout:fragment="bodyContent">
+        <div class="card shadow mb-4">
+            <!-- Card Header -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">User Table</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body pr-5 pl-5">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>User ID</th>
+                            <th>User Group</th>
+                            <th>Enabled</th>
+                        </tr>
+                        </thead>
+                        <tbody id="listBody">
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">00</td>
+                            <td><a th:href="${'/userManagement/modify/' + user.id}"
+                                   th:text="${user.username}">bhJung</a></td>
+                            <td th:text="${user.groupName}">Dev</td>
+                            <td th:text="${user.enabled}">true</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div th:text="${'Showing ' + numberOfElements + ' to ' + (size) + ' of ' + totalElement + ' entries'}">
+                            Showing 1 to 10 of 57 entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <ul class="pagination">
+                                <li th:if="${page > 0}" class="paginate_button" id="dataTable_previous">
+                                    <a th:href="${'.?page=' + (page - 1) + '&size=' + size + '&sort=' + sort}"
+                                       class="page-link">Previous</a>
+                                </li>
+                                <li th:each="paginateNum : ${#numbers.sequence(paginateStartNumber, paginateEndNumber)}"
+                                    th:classappend="${paginateNum == page} ? 'active' : ''"
+                                    class="paginate_button page-item">
+                                    <a th:href="${'.?page=' + paginateNum + '&size=' + size + '&sort=' + sort}"
+                                       class="page-link"
+                                       th:text="${paginateNum + 1}">1</a></li>
+                                <li th:if="${page < totalPage - 1}" class="paginate_button">
+                                    <a th:href="${'.?page=' + (page + 1) + '&size=' + size + '&sort=' + sort}"
+                                       class="page-link">Next</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block layout:fragment="pageCustomScript">
+        <script>
+            $(document).ready(function () {
+
+            })
+
+        </script>
+    </th:block>
+
+
+<th:block layout:fragment="pageCustomCss">
+
+</th:block>
+
+</body>
+</html>

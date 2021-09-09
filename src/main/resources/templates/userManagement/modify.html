@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/frameFixedLayout}">
+<head>
+    <meta charset="utf-8">
+    <title>User Management</title>
+</head>
+<body>
+<th:block layout:fragment="bodyContentHeader">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">User Management</h1>
+
+    </div>
+</th:block>
+
+<th:block layout:fragment="bodyContent">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <!-- Card Body -->
+            <div class="card-body pr-5 pl-5">
+                <form>
+                    <div class="row no-gutters align-items-center mb-3 form-group">
+                        <div class="col-1 mr-2 text-right">Name:</div>
+                        <div class="col-auto" th:text="${user.username}"></div>
+                    </div>
+                    <div class="row no-gutters align-items-center mb-3 form-group">
+                        <div class="col-1 mr-2 text-right">Group:</div>
+                        <div class="col-auto">
+                            <select name="userGroup.name" class="form-control">
+                                <option th:each="userGroup : ${userGroups}"
+                                        th:value="${userGroup.name}"
+                                        th:selected="${user.groupName == userGroup.name}"
+                                        th:text="${userGroup.name}">Member
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row no-gutters align-items-center mb-3 form-group">
+                        <div class="col-1 mr-2 text-right">Password:</div>
+                        <div class="col-auto"><input type="password" class="form-control" name="password"
+                                                     maxlength="21"></div>
+                    </div>
+                    <div class="row no-gutters align-items-center mb-3 form-group">
+                        <div class="col-1 mr-2 text-right">Password Confirm:</div>
+                        <div class="col-auto"><input type="password" class="form-control" name="passwordConfirm"
+                                                     maxlength="21" required></div>
+                    </div>
+                    <div class="d-flex align-self-end justify-content-end">
+                        <a href="#" id="saveBtn" class="btn btn-primary btn-icon-split ml-1">
+						    	<span class="icon text-white-50">
+						    		<i class="fas fa-plus"></i>
+						    	</span>
+                            <span class="text">Save</span>
+                        </a>
+						<a href="#" id="enableBtn" class="btn btn-primary btn-icon-split ml-1"
+                        th:classappend="${user.enabled} ? 'd-none' : ''">
+						    	<span class="icon text-white-50">
+						    		<i class="fas fa-lock-open"></i>
+						    	</span>
+							<span class="text">Enable</span>
+						</a>
+						<a href="#" id="disableBtn" class="btn btn-danger btn-icon-split ml-1"
+                        th:classappend="${!user.enabled} ? 'd-none' : ''">
+						    	<span class="icon text-white-50">
+						    		<i class="fas fa-lock"></i>
+						    	</span>
+							<span class="text">Disable</span>
+						</a>
+                        <a href="#" id="deleteBtn" class="btn btn-danger btn-icon-split ml-1">
+						    	<span class="icon text-white-50">
+						    		<i class="fas fa-trash"></i>
+						    	</span>
+                            <span class="text">Remove</span>
+                        </a>
+                        <a href="/userManagement/table" id="cancelBtn" class="btn btn-secondary btn-icon-split ml-1">
+						    	<span class="icon text-white-50">
+						    		<i class="fas fa-times"></i>
+						    	</span>
+                            <span class="text">Cancel</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="pageCustomScript">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+            let $userGroups = $("option", "select[name='userGroup.name']");
+            let userId = [[${user.id}]];
+
+            function getUserData() {
+                let user = {};
+                user.id = userId;
+                user.password = $("input[name='password']").val();
+                user.groupName = $userGroups.filter((idx, item) => item.selected).val();
+
+                return user;
+            }
+
+            $("#saveBtn").on("click", function (e) {
+                e.preventDefault();
+
+                if ($("input[name='password']").val() != $("input[name='passwordConfirm']").val()) {
+                    alert("비밀번호가 일치하지 않습니다");
+
+                    return;
+                }
+
+                $.ajax({
+                    url: "/userManagement/user/" + userId,
+                    type: "put",
+                    data: getUserData(),
+                    success: function (result) {
+
+                        if (result == 2) {
+                            alert("Password는 5자에서 21자로 구성되어야합니다.");
+                            return;
+                        }
+
+                        window.location.href = '/userManagement/table';
+                    }
+                }) // end of ajax
+            });
+
+            $("#deleteBtn").on("click", function () {
+                if (!(confirm("사용자를 삭제하시겠습니까?"))) return;
+
+                $.ajax({
+                    url: "/userManagement/user/" + userId,
+                    type: "delete",
+                    success: function (result) {
+                        console.log(result)
+
+                        window.location.href = '/userManagement/table';
+                    }
+                }) // end of ajax
+            });
+
+            $("#disableBtn").on("click", function (event) {
+            	event.preventDefault();
+
+            	if (confirm("사용자를 비활성화 하시겠습니까?")) {
+					$.ajax({
+						url: "/userManagement/disable/" + userId,
+						type: "put",
+						success: function (data, textStatus, xhr) {
+							window.location.reload();
+						}
+					});
+				}
+			});
+
+			$("#enableBtn").on("click", function (event) {
+				event.preventDefault();
+
+				if (confirm("사용자를 활성화 하시겠습니까?")) {
+					$.ajax({
+						url: "/userManagement/enable/" + userId,
+						type: "put",
+						success: function (data, textStatus, xhr) {
+							window.location.reload();
+						}
+					});
+				}
+			});
+
+        })
+    </script>
+</th:block>
+
+<th:block layout:fragment="pageCustomCss">
+
+</th:block>
+
+</body>
+</html>
