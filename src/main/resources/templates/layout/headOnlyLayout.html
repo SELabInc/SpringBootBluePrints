@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">BLUE PRINTS</title>
+	<!-- 공통 css, js, meta tag -->
+	<th:block th:include="~{fragments/layout/commonHead}"></th:block>
+
+	<th:block layout:fragment="headContentBeforeThemeStyle"></th:block>
+	<!-- Theme style -->
+	<link rel="stylesheet" th:href="@{/vendor/admin-lte/css/adminlte.min.css}">
+</head>
+</html>

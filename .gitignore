@@ -5,6 +5,7 @@ bin/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+src/main/resources/application-personal.yml
 
 ### STS ###
 .apt_generated
