@@ -2,39 +2,29 @@ package com.selab.springbootblueprints.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.selab.springbootblueprints.util.ValidationPattern;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.Collection;
 
 @Entity
 @Table(name = "User")
-@ToString()
-@Setter
-@DynamicUpdate
-public class User implements UserDetails {
+@Data
+public class User {
 	
 	@Id
 	@Column(name = "Id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
 	private Long id;
 
 	@Column(name = "Username", unique = true)
-	@Getter
 	private String username;
 	
 	@Column(name = "Password")
-	@Getter
 	private String password;
 	
 	@Column(name = "Enabled")
@@ -51,13 +41,12 @@ public class User implements UserDetails {
 	
 	@ManyToOne
 	@JoinColumn(name = "UserGroupId")
-	@Getter
+	@ToString.Exclude
 	private UserGroup userGroup;
 	
 	@Column(name = "RegisterDate")
 	@CreationTimestamp
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	@Getter
 	private ZonedDateTime registerDate;
 	
 	@Transient
@@ -112,30 +101,5 @@ public class User implements UserDetails {
 
 		return passwordLength >= MIN_PASSWORD_LENGTH &&
 				passwordLength <= MAX_PASSWORD_LENGTH;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.userGroup.getUserGroupAuthList();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return this.accountNonExpired;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return this.accountNonLocked;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return this.credentialsNonExpired;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return enabled;
 	}
 }
