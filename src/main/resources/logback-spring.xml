@@ -1,45 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <!-- use Spring default values -->
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-
-    <property name="LOG_ROOT_DIRECTORY" value="/radar-wind-profiler-log"/>
-
+<configuration scan="true" scanPeriod="30 seconds" debug="true">
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern><!-- use Spring default values -->
-            <charset>UTF8</charset>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <appender name="RollingFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_ROOT_DIRECTORY}/web/server-log.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>${FILE_LOG_PATTERN}</Pattern><!-- use Spring default values -->
-        </encoder>
+    <logger name="jdbc" level="off"/>
+    <logger name="jdbc.sqlonly" level="off"/>
+    <logger name="jdbc.sqltiming" level="debug"/>
+    <logger name="jdbc.audit" level="off"/>
+    <logger name="jdbc.resultset" level="off"/>
+    <logger name="jdbc.resultsettable" level="debug"/>
+    <logger name="jdbc.connection" level="off"/>
 
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOG_ROOT_DIRECTORY}/web/server-log-%d{yyyy-MM-dd}.%i.log.gz
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
-
-    <logger name="org.springframework" level="info"/>
-    <logger name="org.apache.tomcat" level="info"/>
-    <logger name="org.hibernate.SQL" level="debug"/>
-    <logger name="com.selab.springbootblueprints" level="trace"/>
-
-    <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="RollingFile"/>
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
     </root>
-
 </configuration>
