@@ -4,6 +4,7 @@ import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.UserGroupVO;
 import com.selab.springbootblueprints.model.bean.UserVO;
 import com.selab.springbootblueprints.model.entity.User;
+import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
 import com.selab.springbootblueprints.service.UserService;
 import com.selab.springbootblueprints.util.Paginate;
 import lombok.Setter;
@@ -37,7 +38,7 @@ public class UserManagementController {
                              @RequestParam(defaultValue = "id") String sort) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-        Page<UserVO> userPage = userService.getAllUserList(pageable);
+        Page<UserPageableInfoVO> userPage = userService.getAllUserList(pageable);
 
         model.addAttribute("users", userPage.getContent());
         model.addAttribute("page", page);

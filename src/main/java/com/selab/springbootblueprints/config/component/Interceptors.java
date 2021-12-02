@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 public class Interceptors {
 
-    HashSet<HandlerInterceptor> interceptors = new HashSet<>();
+    private final HashSet<HandlerInterceptor> interceptors = new HashSet<>();
 
     public void append(HandlerInterceptor interceptor) {
         interceptors.add(interceptor);

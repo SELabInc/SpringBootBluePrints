@@ -2,7 +2,8 @@ package com.selab.springbootblueprints.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.selab.springbootblueprints.util.ValidationPattern;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,14 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "User")
-@Data
+@Getter
+@Setter
+@ToString
+@NamedEntityGraphs({
+		@NamedEntityGraph(name="joinUserGroup", attributeNodes = {
+				@NamedAttributeNode("userGroup")
+		})
+})
 public class User {
 	
 	@Id
@@ -23,10 +31,10 @@ public class User {
 
 	@Column(name = "Username", unique = true)
 	private String username;
-	
+
 	@Column(name = "Password")
 	private String password;
-	
+
 	@Column(name = "Enabled")
 	private Boolean enabled;
 
@@ -48,19 +56,19 @@ public class User {
 	@CreationTimestamp
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private ZonedDateTime registerDate;
-	
+
 	@Transient
 	@JsonIgnore
 	private static final int MAX_NAME_LENGTH = 15;
-	
+
 	@Transient
 	@JsonIgnore
 	private static final int MIN_NAME_LENGTH = 5;
-	
+
 	@Transient
 	@JsonIgnore
 	private static final int MAX_PASSWORD_LENGTH = 21;
-	
+
 	@Transient
 	@JsonIgnore
 	private static final int MIN_PASSWORD_LENGTH = 5;
