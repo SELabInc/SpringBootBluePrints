@@ -12,8 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 @Entity
 @Table(name = "UserGroupAuth")
 @Data
-@ToString(exclude = {"userGroup"})
-public class UserGroupAuth implements GrantedAuthority {
+@ToString
+public class UserGroupAuth {
 	
 	@Id
 	@Column(name = "Id")
@@ -22,15 +22,10 @@ public class UserGroupAuth implements GrantedAuthority {
 	
 	@ManyToOne
 	@JoinColumn(name = "UserGroupId")
+	@ToString.Exclude
 	@JsonIgnore
 	private UserGroup userGroup;
 	
 	@Column(name = "Auth")
 	private Auth auth;
-
-	@Transient
-	@Override
-	public String getAuthority() {
-		return auth.getAuthority();
-	}
 }

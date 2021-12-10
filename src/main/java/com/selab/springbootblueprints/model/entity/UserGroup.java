@@ -19,7 +19,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "UserGroup")
 @Data
-@ToString(exclude = {"userList"})
+@ToString
 public class UserGroup {
 
 	@Id
@@ -32,8 +32,11 @@ public class UserGroup {
 
 	@OneToMany(mappedBy = "userGroup")
 	@JsonIgnore
+	@ToString.Exclude
 	private List<User> userList;
 	
 	@OneToMany(mappedBy = "userGroup", fetch = FetchType.LAZY)
+	@JsonIgnore
+	@ToString.Exclude
 	private List<UserGroupAuth> userGroupAuthList;
 }

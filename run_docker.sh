@@ -6,5 +6,5 @@ docker rm -f springbootblueprints
 
 docker run -d --restart unless-stopped \
   --name springbootblueprints -p 8000:8000 \
-  -v /docker_data/living_lab/living_lab \
+  -v /docker_data/springbootblueprints:/springbootblueprints \
   springbootblueprints

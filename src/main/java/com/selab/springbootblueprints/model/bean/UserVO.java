@@ -19,10 +19,10 @@ public class UserVO {
     public UserVO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.enabled = user.isEnabled();
-        this.accountNonExpired = user.isAccountNonExpired();
-        this.accountNonLocked = user.isAccountNonLocked();
-        this.credentialsNonExpired = user.isCredentialsNonExpired();
+        this.enabled = user.getEnabled();
+        this.accountNonExpired = user.getAccountNonExpired();
+        this.accountNonLocked = user.getAccountNonLocked();
+        this.credentialsNonExpired = user.getCredentialsNonExpired();
         this.groupName = user.getUserGroup().getName();
         this.registerDate = user.getRegisterDate();
     }

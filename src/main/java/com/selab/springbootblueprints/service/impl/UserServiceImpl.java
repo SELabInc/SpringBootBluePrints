@@ -1,12 +1,18 @@
 package com.selab.springbootblueprints.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import com.selab.springbootblueprints.exception.UserGroupNotFoundException;
 import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
+import com.selab.springbootblueprints.model.bean.Auth;
+import com.selab.springbootblueprints.model.bean.UserDetailsImpl;
 import com.selab.springbootblueprints.model.bean.UserGroupVO;
 import com.selab.springbootblueprints.model.bean.UserVO;
+import com.selab.springbootblueprints.model.entity.QUser;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.UserGroup;
+import com.selab.springbootblueprints.model.entity.UserGroupAuth;
+import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
 import com.selab.springbootblueprints.repository.UserGroupRepository;
 import com.selab.springbootblueprints.repository.UserRepository;
 import com.selab.springbootblueprints.service.UserService;
@@ -21,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +50,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(String name, String password, String groupName)
             throws UserNameValidationException, UserPasswordValidationException, UserGroupNotFoundException {
-        UserGroup group = userGroupRepository.findByName(groupName);
+        UserGroup group = userGroupRepository.findByName(groupName)
+                .orElseThrow(NoResultException::new);
         if (group == null) {
             throw new UserGroupNotFoundException(String.format("Not found user group(name:%s)", groupName));
         } else if (!User.isValidName(name)) {
@@ -63,21 +71,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO getUser(long id) {
-        User user = userRepository.findByIdWithUserGroup(id);
+        User user = userRepository.findByIdJoinUserGroup(id)
+                .orElseThrow(NoResultException::new);
 
         return new UserVO(user);
     }
 
     @Override
     public boolean isExist(String username) {
-        return userRepository.existByName(username);
+        Predicate predicate = QUser.user
+                .username.eq(username);
+
+        return userRepository.exists(predicate);
     }
 
     @Override
-    public Page<UserVO> getAllUserList(Pageable pageable) {
-        Page<User> userPage = userRepository.findAllWithGroup(pageable);
-
-        return userPage.map(UserVO::new);
+    public Page<UserPageableInfoVO> getAllUserList(Pageable pageable) {
+        return userRepository.findAllBy(pageable);
     }
 
     @Override
@@ -104,7 +114,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByNameWithUserGroup(username);
+        User userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User name not found (name: %s)", username)));
+
+        Auth[] auths = userEntity.getUserGroup()
+                .getUserGroupAuthList()
+                .stream()
+                .map(UserGroupAuth::getAuth)
+                .toArray(Auth[]::new);
+
+        return new UserDetailsImpl(userEntity, auths);
     }
 
     @Override
