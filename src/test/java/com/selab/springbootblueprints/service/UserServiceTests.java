@@ -1,98 +1,183 @@
 package com.selab.springbootblueprints.service;
 
-import lombok.Setter;
+import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
 @Slf4j
+@SpringBootTest
+@Transactional
 public class UserServiceTests {
 
-    @Setter(onMethod_ = @Autowired)
     private UserService service;
+    private UserRepository repository;
 
-    private static final String TEST_USER_NAME = "TESTUSER";
-    private static final String TEST_USER_PASSWORD = "TESTPASSWORD";
-    private static final String EXIST_GROUP_NAME_FOR_TEST = "Admin";
-    private static final String NON_EXIST_GROUP_NAME_FOR_TEST = "POO";
-    private static final String NON_VALID_PASSWORD_CASE_1 = "abcd";
-    private static final String NON_VALID_PASSWORD_CASE_2 = "abcdefghijklmnopqrstuw";
-    private static final String NON_VALID_USER_NAME_CASE_1 = "§정보현§";
-    private static final String NON_VALID_USER_NAME_CASE_2 = "abcd";
-    private static final String NON_VALID_USER_NAME_CASE_3 = "qwertyuiopasdfgh";
-    private static final String NON_VALID_USER_NAME_CASE_4 = "selab dev";
+    private final String testUserName = "TESTUSER";
+    private final String testUserPassword = "TESTPASSWORD";
+    private final String existGroupNameForTest = "Admin";
+    private final String nonExistGroupName = "POO";
+    private final long nonExistUserId = -1;
+    private final long existUserId;
+    private final String existUsername;
 
-    @BeforeEach
+    private final String[] nonValidPasswordCases = new String[] {
+            "abcd", "abcdefghijklmnopqrstuw", ""
+    };
+    private final String[] nonValidUsernameCases = new String[] {
+            "abcd", "§정보현§", "qwertyuiopasdfgh", "selab dev", "; DROP TABLE USER;", "<html>HELLO!<html>", ""
+    };
+
+
+    @Autowired
+    public UserServiceTests(UserService service, UserRepository repository) {
+        this.service = service;
+        this.repository = repository;
+
+        UserPageableInfoVO existUserInfo = repository.findAllBy(Pageable.ofSize(1)).getContent().get(0);
+        this.existUserId = existUserInfo.getId();
+        this.existUsername = existUserInfo.getUsername();
+    }
+
+    @BeforeAll  // run before test start
+    public static void beforeAll() {
+
+    }
+
+    @BeforeEach // run before each test
     public void beforeEach() {
-        // TODO bhjung test code
+
     }
 
     @AfterEach
     public void afterEach() {
-        // TODO bhjung test code
+
+    }
+
+    @AfterAll
+    public static void afterAll() {
+
     }
 
     @Test
-    public void addUser() {
-        // TODO bhjung test code
+    public void addUserWithGroupTest() {
+        service.addUser(testUserName, testUserPassword, existGroupNameForTest);
+
     }
 
     @Test
-    public void addUserValid() {
-        // TODO bhjung test code
+    public void addUserWithGroupValidTest() {
+        Assertions.assertThrows(Exception.class, () -> service.addUser(testUserName, testUserPassword, nonExistGroupName));
+
+        for (String nonValidUsername : nonValidUsernameCases) {
+            Assertions.assertThrows(Exception.class, () ->
+                    service.addUser(nonValidUsername, testUserPassword, existGroupNameForTest)
+            );
+        }
+
+        for (String nonValidPassword : nonValidPasswordCases) {
+            Assertions.assertThrows(Exception.class, () ->
+                service.addUser(testUserName, nonValidPassword, existGroupNameForTest)
+            );
+        }
     }
 
     @Test
-    public void getUser() {
-        // TODO bhjung test code
+    public void addUserTest() {
+        service.addUser(testUserName, testUserPassword);
     }
 
     @Test
-    public void isExist() {
-        // TODO bhjung test code
+    public void addUserValidTest() {
+        for (String nonValidUsername : nonValidUsernameCases) {
+            Assertions.assertThrows(Exception.class, () ->
+                service.addUser(nonValidUsername, testUserPassword)
+            );
+        }
+
+        for (String nonValidPassword : nonValidPasswordCases) {
+            Assertions.assertThrows(Exception.class, () ->
+                service.addUser(testUserName, nonValidPassword)
+            );
+        }
     }
 
     @Test
-    public void getAllUserList() {
-        // TODO bhjung test code
+    public void getUserTest() {
+        service.getUser(existUserId);
     }
 
     @Test
-    public void update() {
-        // TODO bhjung test code
+    public void isExistTest() {
+        Assertions.assertTrue(service.isExist(existUsername));
+        Assertions.assertFalse(service.isExist(""));
     }
 
     @Test
-    public void changePassword() {
-        // TODO bhjung test code
+    public void getAllUserListTest() {
+        service.getAllUserList(PageRequest.ofSize(10));
     }
 
     @Test
-    public void disableUser() {
-        // TODO bhjung test code
+    public void updateTest() {
+        service.update(existUserId, existGroupNameForTest);
     }
 
     @Test
-    public void enableUser(long id) {
-        // TODO bhjung test code
+    public void changePasswordTest() {
+        service.changePassword(existUserId, testUserPassword);
     }
 
     @Test
-    public void removeUser(long id) {
-        // TODO bhjung test code
+    public void changePasswordValidTest() {
+        for (String nonValidPassword : nonValidPasswordCases) {
+            Assertions.assertThrows(Exception.class, () ->
+                service.changePassword(existUserId, nonValidPassword)
+            );
+        }
     }
 
     @Test
-    public void getUserGroupList() {
-        // TODO bhjung test code
+    public void disableUserTest() {
+        service.disableUser(existUserId);
     }
 
     @Test
-    public void loadUserByUsername() {
-        // TODO bhjung test code
+    public void enableUserTest() {
+        service.enableUser(existUserId);
+    }
+
+    @Test
+    public void removeUserTest() {
+        service.removeUser(existUserId);
+    }
+
+    @Test
+    public void removeUserValidTest() {
+        Assertions.assertThrows(Exception.class, () ->
+            service.removeUser(nonExistUserId)
+        );
+    }
+
+    @Test
+    public void getUserGroupListTest() {
+        service.getUserGroupList();
+    }
+
+    @Test
+    public void loadUserByUsernameTest() {
+        service.loadUserByUsername(existUsername);
+    }
+
+    @Test
+    public void loadUserByUsernameValidTest() {
+        Assertions.assertThrows(Exception.class, () ->
+            service.loadUserByUsername("")
+        );
     }
 }
