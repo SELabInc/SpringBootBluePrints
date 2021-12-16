@@ -8,6 +8,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ScheduledFuture;
 
 @Slf4j
 @Configuration
@@ -30,9 +31,15 @@ public class TaskSchedulerConfig {
         // 'sec min hour dayOfMonth month dayOfWeek (year / optional)'
         String cronPattern = "0 0 * * * ?";
 
-        scheduler.schedule(() -> {
+        ScheduledFuture scheduledFuture = scheduler.schedule(() -> {
             String logMessage = String.format("Task schedule sample time-signal log: %s o'clock", LocalDateTime.now().getHour());
             log.trace(logMessage);
         }, new CronTrigger(cronPattern));
+
+        // if you want to stop this
+//        boolean cancelSuccessFlag = scheduledFuture.cancel(false);
+//        if (!cancelSuccessFlag) {
+//            log.warn("scheduled task cancel fail: maybe already canceled");
+//        }
     }
 }
