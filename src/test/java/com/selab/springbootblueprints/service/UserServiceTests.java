@@ -1,6 +1,8 @@
 package com.selab.springbootblueprints.service;
 
+import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -109,7 +113,7 @@ public class UserServiceTests {
 
     @Test
     public void getUserTest() {
-        service.getUser(existUserId);
+        UserVO userVO = service.getUser(existUserId).get();
     }
 
     @Test
@@ -166,7 +170,7 @@ public class UserServiceTests {
 
     @Test
     public void getUserGroupListTest() {
-        service.getUserGroupList();
+        List<UserGroupVO> groupVOS = service.getUserGroupList();
     }
 
     @Test

@@ -126,7 +126,7 @@
                     data: getUserData(),
                     success: function (result) {
 
-                        if (result == 2) {
+                        if (result == 'PASSWORD_NOT_VALID') {
                             alert("Password는 5자에서 21자로 구성되어야합니다.");
                             return;
                         }
@@ -177,7 +177,6 @@
 					});
 				}
 			});
-
         })
     </script>
 </th:block>

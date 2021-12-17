@@ -6,13 +6,13 @@ import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.Auth;
 import com.selab.springbootblueprints.model.bean.UserDetailsImpl;
-import com.selab.springbootblueprints.model.bean.UserGroupVO;
-import com.selab.springbootblueprints.model.bean.UserVO;
 import com.selab.springbootblueprints.model.entity.QUser;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.UserGroup;
 import com.selab.springbootblueprints.model.entity.UserGroupAuth;
+import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.repository.UserGroupRepository;
 import com.selab.springbootblueprints.repository.UserRepository;
 import com.selab.springbootblueprints.service.UserService;
@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -70,11 +70,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserVO getUser(long id) {
-        User user = userRepository.findByIdJoinUserGroup(id)
-                .orElseThrow(NoResultException::new);
-
-        return new UserVO(user);
+    public Optional<UserVO> getUser(long id) {
+        return userRepository.findUserVoById(id);
     }
 
     @Override
@@ -91,10 +88,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(long id, String groupName)
-            throws UserPasswordValidationException, UserGroupNotFoundException {
+    public void update(long id, String groupName) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Optional<UserGroup> userGroupOptional = userGroupRepository.findByName(groupName);
+            if (userGroupOptional.isPresent()) {
+                user.setUserGroup(userGroupOptional.get());
+            } else {
+                log.error(String.format("user group field update fail: userGroup(name:%s) not found", groupName));
+            }
 
-        userRepository.update(id, groupName); // TODO bhjung groupNotFound & userNotFound exception throw
+            userRepository.save(user);
+        } else {
+            log.error(String.format("user update fail: user(id:%s) not found", id));
+        }
     }
 
     @Override
@@ -112,7 +120,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
+    @Override   // for security.core.userdetails.UserDetailsService
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User name not found (name: %s)", username)));
@@ -138,8 +146,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserGroupVO> getUserGroupList() {
-        return userGroupRepository.findAll().stream()
-                .map(UserGroupVO::new)
-                .collect(Collectors.toList());
+        return userGroupRepository.findAllBy();
     }
 }

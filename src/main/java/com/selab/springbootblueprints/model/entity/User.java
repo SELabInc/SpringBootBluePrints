@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -55,7 +56,7 @@ public class User {
 	@Column(name = "RegisterDate")
 	@CreationTimestamp
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private ZonedDateTime registerDate;
+	private LocalDateTime registerDate;
 
 	@Transient
 	@JsonIgnore

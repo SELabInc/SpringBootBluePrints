@@ -2,6 +2,7 @@ package com.selab.springbootblueprints.repository;
 
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -19,16 +20,12 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>, 
 	@EntityGraph("joinUserGroup")
 	Optional<User> findByUsername(String name);
 
-	@Query("SELECT u FROM User u JOIN FETCH u.userGroup WHERE u.id = :id")
-	Optional<User> findByIdJoinUserGroup(long id);
+	@Query("SELECT u FROM User u LEFT JOIN FETCH u.userGroup WHERE u.id = :id")
+	Optional<UserVO> findUserVoById(long id);
 
 	@Modifying
 	@Query("UPDATE User u SET u.enabled = :enabled WHERE u.id = :id")
 	void updateEnabled(long id, boolean enabled);
-
-	@Modifying
-	@Query("UPDATE User u SET u.userGroup = (SELECT g FROM UserGroup g WHERE g.name = :groupName) WHERE u.id = :id")
-	void update(long id, String groupName);
 
 	@Modifying
 	@Query("UPDATE User u SET u.password = :password WHERE u.id = :id")

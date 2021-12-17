@@ -4,16 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @SuppressWarnings("EmptyMethod")
 public class LoginController {
 
     @GetMapping("/login")
-    public void getSignIn(Model model, boolean fail) {
+    public ModelAndView getSignIn(boolean fail) {
+        ModelAndView modelAndView = new ModelAndView("login");
         if (fail) {
-            model.addAttribute("message", "incorrect username or password.");
+            modelAndView.addObject("message", "incorrect username or password.");
         }
+
+        return modelAndView;
     }
 
     @GetMapping("/logout")

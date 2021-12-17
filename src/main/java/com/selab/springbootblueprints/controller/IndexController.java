@@ -2,8 +2,10 @@ package com.selab.springbootblueprints.controller;
 
 import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
+import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
 import com.selab.springbootblueprints.service.UserService;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -27,24 +30,24 @@ public class IndexController {
     }
 
     @GetMapping("/register")
-    public void getSignUp(Model model) {
+    public void getSignUp() {
 
     }
 
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<Integer> postUser(String username, String password) {
-        int resultValue = 0;
+    public ResponseEntity<PostUserResponseStatus> postUser(String username, String password) {
+        PostUserResponseStatus resultValue = PostUserResponseStatus.OK;
 
         try {
             userService.addUser(username, password);
         } catch (UserNameValidationException e) {
-            resultValue = 1;
+            resultValue = PostUserResponseStatus.NAME_NOT_VALID;
         } catch (UserPasswordValidationException e) {
-            resultValue = 2;
+            resultValue = PostUserResponseStatus.PASSWORD_NOT_VALID;
         }
 
-        return resultValue == 0 ?
+        return resultValue.equals(PostUserResponseStatus.OK) ?
                 new ResponseEntity<>(resultValue, HttpStatus.CREATED) : new ResponseEntity<>(resultValue, HttpStatus.OK);
     }
 }
