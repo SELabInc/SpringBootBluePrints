@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long>, QuerydslPredicateExecutor<User> {
 
-	@EntityGraph("joinUserGroup")
+	@EntityGraph("joinUserAuth")
 	Optional<User> findByUsername(String name);
 
 	@Query("SELECT u FROM User u LEFT JOIN FETCH u.userGroup WHERE u.id = :id")

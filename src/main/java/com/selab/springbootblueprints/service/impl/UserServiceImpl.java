@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     private final UserGroupRepository userGroupRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private static final String DEFAULT_USER_GROUP_NAME = "NotApproval";
+    private static final String DEFAULT_USER_GROUP_NAME = "None";
 
     @Override
     public void addUser(String name, String password, String groupName)
