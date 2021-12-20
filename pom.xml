@@ -32,6 +32,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- spring security (filter) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,7 +79,6 @@
             <version>2.9.2</version>
         </dependency>
 
-
         <!-- Database Start -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -95,14 +99,12 @@
         </dependency>
         <!-- Database End -->
 
-
         <!-- hibernate log print -->
         <dependency>
             <groupId>org.bgee.log4jdbc-log4j2</groupId>
             <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>1.16</version>
         </dependency>
-
 
         <!-- thymeleaf -->
         <dependency>
@@ -130,6 +132,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

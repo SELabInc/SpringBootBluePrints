@@ -3,6 +3,7 @@ package com.selab.springbootblueprints.controller;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.Paginate;
 import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
+import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -100,14 +102,15 @@ public class UserManagementController {
 
     @ResponseBody
     @PutMapping("/user/{id}")
-    public ResponseEntity<PostUserResponseStatus> putUser(@PathVariable long id, String password, String groupName) {
+    public ResponseEntity<PostUserResponseStatus> putUser(@PathVariable long id, @Valid UserUpdateDTO dto) {
         PostUserResponseStatus result = PostUserResponseStatus.OK;
 
+        String password = dto.getPassword();
         try {
             if (password != null && password.length() > 0) {
                     userService.changePassword(id, password);
             }
-            userService.update(id, groupName);
+            userService.update(id, dto.getGroupName());
         } catch (UserPasswordValidationException e) {
             result = PostUserResponseStatus.PASSWORD_NOT_VALID;
         }
