@@ -9,7 +9,7 @@
 
     <logger name="jdbc" level="off"/>
     <logger name="jdbc.sqlonly" level="off"/>
-    <logger name="jdbc.sqltiming" level="debug"/>
+    <logger name="jdbc.sqltiming" level="off"/>
     <logger name="jdbc.audit" level="off"/>
     <logger name="jdbc.resultset" level="off"/>
     <logger name="jdbc.resultsettable" level="debug"/>
