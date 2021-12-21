@@ -23,7 +23,12 @@ public class ServiceAspect {
         long endTime = Instant.now().toEpochMilli();
 
         long elapsed = endTime - startTime;
-        log.trace(proceedingSignature.toShortString()+": finish in "+elapsed+"ms");
+        String logMessage = String.format("%s: finish in %sms", proceedingSignature.toShortString(), elapsed);
+        if (elapsed < 300) {
+            log.trace(logMessage);
+        } else {
+            log.warn(logMessage);
+        }
 
         return result;
     }

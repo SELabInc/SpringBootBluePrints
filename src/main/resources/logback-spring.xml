@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds" debug="true">
+    <!-- use Spring default values -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <property name="LOG_ROOT_DIRECTORY" value="./logs"/>
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern><!-- use Spring default values -->
+            <charset>UTF8</charset>
         </encoder>
     </appender>
+
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ROOT_DIRECTORY}/web/server-log.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern><!-- use Spring default values -->
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOG_ROOT_DIRECTORY}/app/server-log-%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+    <logger name="com.selab.springbootblueprints" level="debug"/>
+
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.springframework.transaction" level="trace"/>
+    <logger name="org.hibernate.SQL" level="info"/>
+    <logger name="org.hibernate.type" level="trace"/>
+    <logger name="org.apache.tomcat" level="info"/>
 
     <logger name="jdbc" level="off"/>
     <logger name="jdbc.sqlonly" level="off"/>
@@ -15,7 +50,9 @@
     <logger name="jdbc.resultsettable" level="debug"/>
     <logger name="jdbc.connection" level="off"/>
 
-    <root level="info">
-        <appender-ref ref="CONSOLE" />
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="RollingFile"/>
     </root>
+
 </configuration>
