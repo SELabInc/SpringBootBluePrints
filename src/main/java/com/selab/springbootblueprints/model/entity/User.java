@@ -11,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "User")

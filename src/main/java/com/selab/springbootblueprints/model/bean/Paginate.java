@@ -4,9 +4,9 @@ public class Paginate {
 
     private static final int defaultPaginateSize = 5;
 
-    private int currentPageNumber;
-    private int totalPageAmount;
-    private int paginateSize;
+    private final int currentPageNumber;
+    private final int totalPageAmount;
+    private final int paginateSize;
 
     public Paginate(int currentPageNumber, int totalPageAmount, int paginateSize) {
         this.currentPageNumber = currentPageNumber;

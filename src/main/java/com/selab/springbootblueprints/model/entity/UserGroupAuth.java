@@ -1,15 +1,12 @@
 package com.selab.springbootblueprints.model.entity;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.selab.springbootblueprints.model.bean.Auth;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "UserGroupAuth")

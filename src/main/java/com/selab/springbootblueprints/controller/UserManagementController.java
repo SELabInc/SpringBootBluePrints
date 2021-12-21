@@ -120,7 +120,7 @@ public class UserManagementController {
 
     @ResponseBody
     @PutMapping("/user/{id}/password")
-    public ResponseEntity<PostUserResponseStatus> putUserPassword(@PathVariable long id, String password) {    // XXX bhjung NOT USED
+    public ResponseEntity<PostUserResponseStatus> putUserPassword(@PathVariable long id, String password) {
         PostUserResponseStatus result = PostUserResponseStatus.OK;
 
         try {
