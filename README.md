@@ -1,10 +1,9 @@
 # SpringBoot Blueprint
 
 ## 개발환경 구축
- * 
+* ./.idea, ./.run 개발환경 설정공유
+* ./deploy 경로 내 파일로 ERD, DDL, 초기데이터 등 DB 형상관리
 
-## 개발산출물
- * ERD
-
- * 개발서버 주소
-    1) http://192.168.100.4:8000/
+## 배포
+* Dockerfile, run_docker.sh 사용하여 Docker 배포
+* port 11000
