@@ -17,9 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Setter(onMethod_ = @Autowired)
+
+    @Setter(onMethod_ = @Autowired)
 	private UserService userService;
+
+    private final String rememberMeKey = "bhjung's remember token value generate key" +
+            "this key must be secure and unique";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -39,8 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
             .logout()
             .logoutUrl("/logout")
-            .logoutSuccessUrl("/register")
-            .invalidateHttpSession(true);
+            .logoutSuccessUrl("/login")
+            .invalidateHttpSession(true)
+        .and()
+            .rememberMe().key(rememberMeKey);
     }
     
     @Bean

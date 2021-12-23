@@ -33,7 +33,7 @@
                         </tr>
                         </thead>
                         <tbody id="listBody">
-                        <tr th:each="user : ${users}">
+                        <tr th:each="user : ${userPage.getContent()}">
                             <td th:text="${user.id}">00</td>
                             <td><a th:href="${'/userManagement/modify/' + user.id}"
                                    th:text="${user.username}">bhJung</a></td>
@@ -43,27 +43,27 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row">
+                <div class="row" th:with="pageable = ${userPage.getPageable()}">
                     <div class="col-sm-12 col-md-5">
-                        <div th:text="${'Showing ' + numberOfElements + ' to ' + (size) + ' of ' + totalElement + ' entries'}">
-                            Showing 1 to 10 of 57 entries
+                        <div th:text="${'Showing ' + (pageable.getPageSize() * (pageable.getPageNumber()) + 1) + ' to ' + (pageable.getPageSize() * pageable.getPageNumber() + userPage.getNumberOfElements()) + ' of ' + userPage.getTotalElements() + ' entries'}">
+                            Showing 1 to 10 of 100 entries
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-                            <ul class="pagination">
-                                <li th:if="${page > 0}" class="paginate_button" id="dataTable_previous">
-                                    <a th:href="${'.?page=' + (page - 1) + '&size=' + size + '&sort=' + sort}"
+                        <div class="dataTables_paginate paging_simple_numbers align-content-end" id="dataTable_paginate">
+                            <ul class="pagination justify-content-end">
+                                <li th:if="${!userPage.isFirst()}" class="paginate_button" id="dataTable_previous">
+                                    <a th:href="${'./table?page=' + (pageable.getPageNumber() - 1) + '&size=' + pageable.getPageSize()}"
                                        class="page-link">Previous</a>
                                 </li>
-                                <li th:each="paginateNum : ${#numbers.sequence(paginateStartNumber, paginateEndNumber)}"
-                                    th:classappend="${paginateNum == page} ? 'active' : ''"
+                                <li th:each="paginateNum : ${#numbers.sequence(paginate.getStartNumber(), paginate.getEndNumber())}"
+                                    th:classappend="${paginateNum == pageable.getPageNumber()} ? 'active' : ''"
                                     class="paginate_button page-item">
-                                    <a th:href="${'.?page=' + paginateNum + '&size=' + size + '&sort=' + sort}"
+                                    <a th:href="${'./table?page=' +  paginateNum + '&size=' + pageable.getPageSize()}"
                                        class="page-link"
                                        th:text="${paginateNum + 1}">1</a></li>
-                                <li th:if="${page < totalPage - 1}" class="paginate_button">
-                                    <a th:href="${'.?page=' + (page + 1) + '&size=' + size + '&sort=' + sort}"
+                                <li th:if="${!userPage.isLast()}" class="paginate_button">
+                                    <a th:href="${'./table?page=' + (pageable.getPageNumber() + 1) + '&size=' + pageable.getPageSize()}"
                                        class="page-link">Next</a>
                                 </li>
                             </ul>
