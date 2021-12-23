@@ -1,25 +1,28 @@
 package com.selab.springbootblueprints.controller;
 
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
-import com.selab.springbootblueprints.model.bean.UserGroupVO;
-import com.selab.springbootblueprints.model.bean.UserVO;
+import com.selab.springbootblueprints.model.bean.Paginate;
+import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
+import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import com.selab.springbootblueprints.model.entity.User;
+import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.service.UserService;
-import com.selab.springbootblueprints.util.Paginate;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -32,48 +35,49 @@ public class UserManagementController {
     private UserService userService;
 
     @GetMapping("/table")
-    public void getUserTable(Model model,
-                             @RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue = "10") int size,
-                             @RequestParam(defaultValue = "id") String sort) {
+    public ModelAndView getUserTable( @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size);
+        ModelAndView modelAndView = new ModelAndView("userManagement/table");
         Page<UserPageableInfoVO> userPage = userService.getAllUserList(pageable);
 
-        model.addAttribute("users", userPage.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("sort", sort);
-        model.addAttribute("totalPage", userPage.getTotalPages());
-        model.addAttribute("totalElement", userPage.getTotalElements());
-        model.addAttribute("numberOfElements", userPage.getNumberOfElements());
-        model.addAttribute("paginateStartNumber", Paginate.getPaginateStartNumber(page));
-        model.addAttribute("paginateEndNumber", Paginate.getPaginateEndNumber(page, userPage.getTotalPages()));
+        Paginate paginate = new Paginate(userPage.getNumber(), userPage.getTotalPages());
+
+        modelAndView.addObject("userPage", userPage);
+        modelAndView.addObject("paginate", paginate);
+
+        return modelAndView;
     }
 
     @GetMapping("/modify/{id}")
-    public String getModify(@PathVariable long id, Model model) {
-        UserVO userVO = userService.getUser(id);
+    public ModelAndView getModify(@PathVariable long id) {
+        ModelAndView modelAndView = new ModelAndView("userManagement/modify");
+
+        UserVO userVO = userService.getUser(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user(id: %s) not exist", id))
+        );
+
         List<UserGroupVO> userGroups = userService.getUserGroupList();
 
-        model.addAttribute("user", userVO);
-        model.addAttribute("userGroups", userGroups);
+        modelAndView.addObject("user", userVO);
+        modelAndView.addObject("userGroups", userGroups);
 
-        return "userManagement/modify";
+        return modelAndView;
     }
 
     @ResponseBody
-    @GetMapping("/overlap")
-    public ResponseEntity<Integer> getOverlap(String name) {
-        int resultValue = 0;
+    @GetMapping("/nameDuplicated")
+    public ResponseEntity<PostUserResponseStatus> getNameDuplicated(@RequestParam(name = "name") String username) {
+        PostUserResponseStatus result = PostUserResponseStatus.OK;
 
-        if (!User.isValidName(name)) {
-            resultValue = 1;
-        } else if (userService.isExist(name)) {
-            resultValue = 3;
+        if (!User.isValidName(username)) {
+            result = PostUserResponseStatus.NAME_NOT_VALID;
+        } else if (userService.isExist(username)) {
+            result = PostUserResponseStatus.USERNAME_DUPLICATED;
         }
 
-        return new ResponseEntity<>(resultValue, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ResponseBody
@@ -88,40 +92,44 @@ public class UserManagementController {
     @ResponseBody
     @GetMapping("/user/{id}")
     public ResponseEntity<UserVO> getUser(@PathVariable long id) {
-        UserVO user = userService.getUser(id);
+        UserVO user = userService.getUser(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user(id: %s) not exist", id))
+                );
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @ResponseBody
     @PutMapping("/user/{id}")
-    public ResponseEntity<Integer> putUser(@PathVariable long id, String password, String groupName) {
-        int resultValue = 0;
+    public ResponseEntity<PostUserResponseStatus> putUser(@PathVariable long id, @Valid UserUpdateDTO dto) {
+        PostUserResponseStatus result = PostUserResponseStatus.OK;
 
+        String password = dto.getPassword();
         try {
             if (password != null && password.length() > 0) {
                     userService.changePassword(id, password);
             }
-            userService.update(id, groupName);
+            userService.update(id, dto.getGroupName());
         } catch (UserPasswordValidationException e) {
-            resultValue = 2;
+            result = PostUserResponseStatus.PASSWORD_NOT_VALID;
         }
 
-        return new ResponseEntity<>(resultValue, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ResponseBody
     @PutMapping("/user/{id}/password")
-    public ResponseEntity<Integer> putUserPassword(@PathVariable long id, String password) {    // XXX bhjung NOT USED
-        int resultValue = 0;
+    public ResponseEntity<PostUserResponseStatus> putUserPassword(@PathVariable long id, String password) {
+        PostUserResponseStatus result = PostUserResponseStatus.OK;
 
         try {
             userService.changePassword(id, password);
         } catch (UserPasswordValidationException e) {
-            resultValue = 2;
+            result = PostUserResponseStatus.PASSWORD_NOT_VALID;
         }
 
-        return new ResponseEntity<>(resultValue, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ResponseBody
@@ -139,10 +147,4 @@ public class UserManagementController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    // TODO bhjung DB row not found exception handling
-//    @ExceptionHandler({})
-//    public ResponseEntity<Integer> handleNotFoundException(HttpServletRequest request, HttpServletResponse response) {
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
 }

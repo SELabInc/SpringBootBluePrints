@@ -89,6 +89,7 @@
     <script th:src="@{/vendor/admin-lte/js/adminlte.min.js}"></script>
 
     <script th:src="@{/js/util/formAjaxFunction.js}"></script>
+
     <script th:inline="javascript">
         $(document).ready(function () {
             $("#registerBtn").on("click", function (event) {
@@ -100,11 +101,11 @@
                 }
 
                 formAjax($("#userForm"), function (data, textStatus, xhr) {
-                    if (data == 1) {
+                    if (data == 'NAME_NOT_VALID') {
                         alert("ID가 유요하지 않습니다.");
-                    } else if (data == 2) {
+                    } else if (data == 'PASSWORD_NOT_VALID') {
                         alert("Password가 유효하지 않습니다.");
-                    } else if (data == 0) {
+                    } else if (data == 'OK') {
                         window.location.href = "/login";
                     } else {
                         console.log(data);
