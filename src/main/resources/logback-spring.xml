@@ -8,7 +8,7 @@
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
 <!--        <destination>${logging.logstash.url}</destination>-->
-        <destination>localhost:5000</destination>
+        <destination>192.168.100.2:6000</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc />
