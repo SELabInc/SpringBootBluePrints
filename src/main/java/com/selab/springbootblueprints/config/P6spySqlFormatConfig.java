@@ -4,60 +4,47 @@ import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
 
-import java.util.Locale;
-import java.util.Stack;
-
 
 public class P6spySqlFormatConfig implements MessageFormattingStrategy {
+
+    private final String STATEMENT_SQL_MESSAGE_FORMAT = "\n" +
+            "\t#%s | url: %s | connectionID: %s | category: %s" +
+            "\n" +
+            "\t%s\n" +
+            "\n" +
+            "\tExecution Time: %sms";
+
+    private final String EITHER_CATEGORY_MESSAGE_FORMAT = "#%s | url: %s | connectionID: %s | category: %s | prepared: %s | sql: %s | elapsed: %sms";
+
     @Override
     public String formatMessage(final int connectionId, final String now, final long elapsed, final String category, final String prepared, String sql, final String url) {
-        Stack<String> callStack = new Stack<>();
-        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            String trace = stackTraceElement.toString();
-            if (trace.startsWith("io.p6spy") && !trace.contains("P6spyPrettySqlFormatter")) {
-                callStack.push(trace);
-            }
+        String result;
+        if (category.equalsIgnoreCase(Category.STATEMENT.getName())) {
+            String formattedSql = formatSql(sql);
+            result = String.format(STATEMENT_SQL_MESSAGE_FORMAT, now, url, connectionId, category, formattedSql, elapsed);
+        } else {
+            result = String.format(EITHER_CATEGORY_MESSAGE_FORMAT, now, url, connectionId, category, prepared, sql, elapsed);
         }
 
-        StringBuilder callStackBuilder = new StringBuilder();
-        int order = 1;
-        while(!callStack.isEmpty()) {
-            callStackBuilder.append("\n\t\t").append(order++).append(". ").append(callStack.pop());
-        }
-
-        String message = new StringBuilder().append("\n\n\tConnection ID: ").append(connectionId)
-                .append("\n\tExecution Time: ").append(elapsed).append(" ms\n")
-                .append("\n\tCall Stack (number 1 is entry point): ").append(callStackBuilder).append("\n")
-                .append("\n----------------------------------------------------------------------------------------------------")
-                .toString();
-
-        return sqlFormat(sql, category, message);
+        return result;
     }
 
-    private String sqlFormat(String sql, String category, String message) {
-        if(sql.trim().isEmpty()) {
-            return "";
-        }
+    private String formatSql(String sql) {
+        String trimLowCaseSql = sql.trim().toLowerCase();
 
-        if(Category.STATEMENT.getName().equals(category)) {
-            String s = sql.trim().toLowerCase(Locale.ROOT);
-            if(s.startsWith("create") || s.startsWith("alter") || s.startsWith("comment")) {
-                sql = FormatStyle.DDL
+        String result = "\n\tquery is empty";
+        if (!trimLowCaseSql.isBlank()) {
+            if (trimLowCaseSql.startsWith("create") || trimLowCaseSql.startsWith("alter") || trimLowCaseSql.startsWith("comment")) {
+                result = FormatStyle.DDL
                         .getFormatter()
                         .format(sql);
-            }
-            else {
-                sql = FormatStyle.BASIC
+            } else {
+                result = FormatStyle.BASIC
                         .getFormatter()
                         .format(sql);
             }
         }
 
-        return new StringBuilder().append("\n")
-                .append(sql)
-                .append(message)
-                .toString();
+        return result;
     }
 }
