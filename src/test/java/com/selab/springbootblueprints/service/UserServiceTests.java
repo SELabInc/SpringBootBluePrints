@@ -39,19 +39,19 @@ public class UserServiceTests {
     @MockBean
     private UserGroupRepository groupRepository;
 
-    private final String testUserName = "TESTUSER";
-    private final String testUserPassword = "TESTPASSWORD";
-    private final String existGroupName = "None";
-    private final String nonExistGroupName = "POO";
-    private final long nonExistUserId = -1;
-    private final long existUserId = 0;
-    private final String existUsername = "existUsername";
-    private final String nonExistUsername = "nonExistUsername";
+    private final String TEST_USER_NAME = "TESTUSER";
+    private final String TEST_USER_PASSWORD = "TESTPASSWORD";
+    private final String EXIST_GROUP_NAME = "None";
+    private final String NON_EXIST_GROUP_NAME = "POO";
+    private final long NON_EXIST_USER_ID = -1;
+    private final long EXIST_USER_ID = 0;
+    private final String EXIST_USER_NAME = "existUsername";
+    private final String NON_EXIST_USER_NAME = "nonExistUsername";
 
-    private final String[] nonValidPasswordCases = new String[] {
+    private final String[] NON_VALID_PASSWORD_CASES = new String[] {
             "abcd", "abcdefghijklmnopqrstuw", ""
     };
-    private final String[] nonValidUsernameCases = new String[] {
+    private final String[] NON_VALID_USER_NAME_CASES = new String[] {
             "abcd", "§정보현§", "qwertyuiopasdfgh", "selab dev", "; DROP TABLE USER;", "<html>HELLO!<html>", ""
     };
 
@@ -85,34 +85,34 @@ public class UserServiceTests {
     public void addUserWithGroupTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
-        when(groupRepository.findByName(existGroupName)).thenReturn(Optional.of(mockGroup));
+        when(groupRepository.findByName(EXIST_GROUP_NAME)).thenReturn(Optional.of(mockGroup));
 
         //test
-        service.addUser(testUserName, testUserPassword, existGroupName);
+        service.addUser(TEST_USER_NAME, TEST_USER_PASSWORD, EXIST_GROUP_NAME);
     }
 
     @Test
     public void addUserWithGroupValidTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
-        when(groupRepository.findByName(existGroupName)).thenReturn(Optional.of(mockGroup));
+        when(groupRepository.findByName(EXIST_GROUP_NAME)).thenReturn(Optional.of(mockGroup));
 
         //test
-        Assertions.assertThrows(Exception.class, () -> service.addUser(testUserName, testUserPassword, nonExistGroupName));
+        Assertions.assertThrows(Exception.class, () -> service.addUser(TEST_USER_NAME, TEST_USER_PASSWORD, NON_EXIST_GROUP_NAME));
 
-        for (String nonValidUsername : nonValidUsernameCases) {
+        for (String nonValidUsername : NON_VALID_USER_NAME_CASES) {
             Assertions.assertThrows(Exception.class, () ->
-                    service.addUser(nonValidUsername, testUserPassword, existGroupName)
+                    service.addUser(nonValidUsername, TEST_USER_PASSWORD, EXIST_GROUP_NAME)
             );
         }
 
-        for (String nonValidPassword : nonValidPasswordCases) {
+        for (String nonValidPassword : NON_VALID_PASSWORD_CASES) {
             Assertions.assertThrows(Exception.class, () ->
-                service.addUser(testUserName, nonValidPassword, existGroupName)
+                service.addUser(TEST_USER_NAME, nonValidPassword, EXIST_GROUP_NAME)
             );
         }
     }
@@ -121,32 +121,32 @@ public class UserServiceTests {
     public void addUserTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
-        when(groupRepository.findByName(existGroupName)).thenReturn(Optional.of(mockGroup));
+        when(groupRepository.findByName(EXIST_GROUP_NAME)).thenReturn(Optional.of(mockGroup));
 
         //test
-        service.addUser(testUserName, testUserPassword);
+        service.addUser(TEST_USER_NAME, TEST_USER_PASSWORD);
     }
 
     @Test
     public void addUserValidTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
-        when(groupRepository.findByName(existGroupName)).thenReturn(Optional.of(mockGroup));
+        when(groupRepository.findByName(EXIST_GROUP_NAME)).thenReturn(Optional.of(mockGroup));
 
         //test
-        for (String nonValidUsername : nonValidUsernameCases) {
+        for (String nonValidUsername : NON_VALID_USER_NAME_CASES) {
             Assertions.assertThrows(Exception.class, () ->
-                service.addUser(nonValidUsername, testUserPassword)
+                service.addUser(nonValidUsername, TEST_USER_PASSWORD)
             );
         }
 
-        for (String nonValidPassword : nonValidPasswordCases) {
+        for (String nonValidPassword : NON_VALID_PASSWORD_CASES) {
             Assertions.assertThrows(Exception.class, () ->
-                service.addUser(testUserName, nonValidPassword)
+                service.addUser(TEST_USER_NAME, nonValidPassword)
             );
         }
     }
@@ -155,11 +155,11 @@ public class UserServiceTests {
     public void getUserTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
         User mockUser = new User();
-        mockUser.setUsername(existUsername);
-        mockUser.setId(existUserId);
+        mockUser.setUsername(EXIST_USER_NAME);
+        mockUser.setId(EXIST_USER_ID);
         mockUser.setUserGroup(mockGroup);
 
         UserVO mockUserVO = new UserVO() {
@@ -204,22 +204,22 @@ public class UserServiceTests {
             }
         };
 
-        when(userRepository.findUserVoById(existUserId)).thenReturn(Optional.of(mockUserVO));
+        when(userRepository.findUserVoById(EXIST_USER_ID)).thenReturn(Optional.of(mockUserVO));
 
         //test
-        Optional<UserVO> userVOOptional = service.getUser(existUserId);
+        Optional<UserVO> userVOOptional = service.getUser(EXIST_USER_ID);
         Assertions.assertTrue(userVOOptional.isPresent());
     }
 
     @Test
     public void isExistTest() {
         //given
-        when(userRepository.exists(QUser.user.username.eq(existUsername))).thenReturn(true);
-        when(userRepository.exists(QUser.user.username.eq(nonExistUsername))).thenReturn(false);
+        when(userRepository.exists(QUser.user.username.eq(EXIST_USER_NAME))).thenReturn(true);
+        when(userRepository.exists(QUser.user.username.eq(NON_EXIST_USER_NAME))).thenReturn(false);
 
         //test
-        Assertions.assertTrue(service.isExist(existUsername));
-        Assertions.assertFalse(service.isExist(nonExistUsername));
+        Assertions.assertTrue(service.isExist(EXIST_USER_NAME));
+        Assertions.assertFalse(service.isExist(NON_EXIST_USER_NAME));
     }
 
     @Test
@@ -236,21 +236,21 @@ public class UserServiceTests {
     public void updateTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
 
         User mockUser = new User();
-        mockUser.setUsername(existUsername);
-        mockUser.setId(existUserId);
+        mockUser.setUsername(EXIST_USER_NAME);
+        mockUser.setId(EXIST_USER_ID);
         mockUser.setUserGroup(mockGroup);
 
-        when(groupRepository.findByName(existGroupName)).thenReturn(Optional.of(mockGroup));
-        when(userRepository.findById(existUserId)).thenReturn(Optional.of(mockUser));
+        when(groupRepository.findByName(EXIST_GROUP_NAME)).thenReturn(Optional.of(mockGroup));
+        when(userRepository.findById(EXIST_USER_ID)).thenReturn(Optional.of(mockUser));
 
-        when(groupRepository.findByName(nonExistGroupName)).thenReturn(Optional.empty());
-        when(userRepository.findById(nonExistUserId)).thenReturn(Optional.empty());
+        when(groupRepository.findByName(NON_EXIST_GROUP_NAME)).thenReturn(Optional.empty());
+        when(userRepository.findById(NON_EXIST_USER_ID)).thenReturn(Optional.empty());
 
         //test
-        service.update(existUserId, existGroupName);
+        service.update(EXIST_USER_ID, EXIST_GROUP_NAME);
     }
 
     @Test
@@ -258,7 +258,7 @@ public class UserServiceTests {
         //given
 
         //test
-        service.changePassword(existUserId, testUserPassword);
+        service.changePassword(EXIST_USER_ID, TEST_USER_PASSWORD);
     }
 
     @Test
@@ -266,9 +266,9 @@ public class UserServiceTests {
         //given
 
         //test
-        for (String nonValidPassword : nonValidPasswordCases) {
+        for (String nonValidPassword : NON_VALID_PASSWORD_CASES) {
             Assertions.assertThrows(Exception.class, () ->
-                service.changePassword(existUserId, nonValidPassword)
+                service.changePassword(EXIST_USER_ID, nonValidPassword)
             );
         }
     }
@@ -278,7 +278,7 @@ public class UserServiceTests {
         //given
 
         //test
-        service.disableUser(existUserId);
+        service.disableUser(EXIST_USER_ID);
     }
 
     @Test
@@ -286,7 +286,7 @@ public class UserServiceTests {
         //given
 
         //test
-        service.enableUser(existUserId);
+        service.enableUser(EXIST_USER_ID);
     }
 
     @Test
@@ -294,14 +294,14 @@ public class UserServiceTests {
         //given
 
         //test
-        service.removeUser(existUserId);
+        service.removeUser(EXIST_USER_ID);
     }
 
     @Test
     public void getUserGroupListTest() {
         //given
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
         UserGroupVO mockGroupVO = new UserGroupVO() {
             @Override
             public long getId() {
@@ -318,7 +318,7 @@ public class UserServiceTests {
 
         //test
         List<UserGroupVO> groupVOS = service.getUserGroupList();
-        Assertions.assertEquals(groupVOS.get(0).getName(), existGroupName);
+        Assertions.assertEquals(groupVOS.get(0).getName(), EXIST_GROUP_NAME);
     }
 
     @Test
@@ -328,33 +328,33 @@ public class UserServiceTests {
         mockAuth.setAuth(Auth.MEMBER);
 
         UserGroup mockGroup = new UserGroup();
-        mockGroup.setName(existGroupName);
+        mockGroup.setName(EXIST_GROUP_NAME);
         mockGroup.setUserGroupAuthList(List.of(mockAuth));
         mockAuth.setUserGroup(mockGroup);
 
         User mockUser = new User();
-        mockUser.setUsername(existUsername);
-        mockUser.setId(existUserId);
+        mockUser.setUsername(EXIST_USER_NAME);
+        mockUser.setId(EXIST_USER_ID);
         mockUser.setUserGroup(mockGroup);
         mockUser.setEnabled(true);
         mockUser.setAccountNonExpired(true);
         mockUser.setAccountNonLocked(true);
         mockUser.setCredentialsNonExpired(true);
 
-        when(userRepository.findByUsername(existUsername)).thenReturn(Optional.of(mockUser));
+        when(userRepository.findByUsername(EXIST_USER_NAME)).thenReturn(Optional.of(mockUser));
 
         //test
-        service.loadUserByUsername(existUsername);
+        service.loadUserByUsername(EXIST_USER_NAME);
     }
 
     @Test
     public void loadUserByUsernameValidTest() {
         //given
-        when(userRepository.findByUsername(nonExistUsername)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(NON_EXIST_USER_NAME)).thenReturn(Optional.empty());
 
         //test
         Assertions.assertThrows(Exception.class, () ->
-            service.loadUserByUsername(nonExistUsername)
+            service.loadUserByUsername(NON_EXIST_USER_NAME)
         );
     }
 }
