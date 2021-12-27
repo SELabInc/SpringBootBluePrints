@@ -22,24 +22,24 @@ public class TaskSchedulerConfig {
         threadPoolTaskScheduler.setThreadNamePrefix("task-scheduler-");
         threadPoolTaskScheduler.initialize();
 
-        setSampleTask(threadPoolTaskScheduler);
-
-        return threadPoolTaskScheduler;
-    }
-
-    private void setSampleTask(TaskScheduler scheduler) {
-        // 'sec min hour dayOfMonth month dayOfWeek (year / optional)'
-        String cronPattern = "0 0 * * * ?";
-
-        ScheduledFuture scheduledFuture = scheduler.schedule(() -> {
-            String logMessage = String.format("Task schedule sample time-signal log: %s o'clock", LocalDateTime.now().getHour());
-            log.trace(logMessage);
-        }, new CronTrigger(cronPattern));
+        ScheduledFuture<?> scheduledFuture = setSampleTask(threadPoolTaskScheduler);
 
         // if you want to stop this
 //        boolean cancelSuccessFlag = scheduledFuture.cancel(false);
 //        if (!cancelSuccessFlag) {
 //            log.warn("scheduled task cancel fail: maybe already canceled");
 //        }
+
+        return threadPoolTaskScheduler;
+    }
+
+    private ScheduledFuture<?> setSampleTask(TaskScheduler scheduler) {
+        // 'sec min hour dayOfMonth month dayOfWeek (year / optional)'
+        String cronPattern = "0 0 * * * ?";
+
+        return scheduler.schedule(() -> {
+            String logMessage = String.format("Task schedule sample time-signal log: %s o'clock", LocalDateTime.now().getHour());
+            log.trace(logMessage);
+        }, new CronTrigger(cronPattern));
     }
 }

@@ -1,6 +1,7 @@
 package com.selab.springbootblueprints.config;
 
 import com.selab.springbootblueprints.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Setter(onMethod_ = @Autowired)
-	private UserService userService;
+	private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     private final String rememberMeKey = "bhjung's remember token value generate key" +
             "this key must be secure and unique";
@@ -48,14 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .rememberMe().key(rememberMeKey);
     }
     
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     @Override
