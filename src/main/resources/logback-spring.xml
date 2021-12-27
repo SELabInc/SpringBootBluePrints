@@ -34,16 +34,8 @@
     <logger name="org.springframework.web" level="info"/>
     <logger name="org.springframework.transaction" level="trace"/>
     <logger name="org.hibernate.SQL" level="info"/>
-    <logger name="org.hibernate.type" level="trace"/>
     <logger name="org.apache.tomcat" level="info"/>
 
-    <logger name="jdbc" level="off"/>
-    <logger name="jdbc.sqlonly" level="off"/>
-    <logger name="jdbc.sqltiming" level="off"/>
-    <logger name="jdbc.audit" level="off"/>
-    <logger name="jdbc.resultset" level="off"/>
-    <logger name="jdbc.resultsettable" level="debug"/>
-    <logger name="jdbc.connection" level="off"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
