@@ -4,9 +4,15 @@ public class Paginate {
 
     private static final int defaultPaginateSize = 5;
 
+    private static boolean pageNumberStartToZero = true;
+
     private final int currentPageNumber;
     private final int totalPageAmount;
     private final int paginateSize;
+
+    public static void setPageNumberStartToZero(boolean bool) {
+        Paginate.pageNumberStartToZero = bool;
+    }
 
     public Paginate(int currentPageNumber, int totalPageAmount, int paginateSize) {
         this.currentPageNumber = currentPageNumber;
@@ -23,9 +29,12 @@ public class Paginate {
     }
 
     public int getEndNumber() {
-        int tmpEndNum = (paginateSize * (1 + (currentPageNumber) / paginateSize)) - 1;
-        int lastPageIndex = totalPageAmount - 1;
+        int currentPaginateIndex = currentPageNumber / paginateSize;
+        int tmpEndNum = (paginateSize * (1 + currentPaginateIndex));
 
-        return Math.min(tmpEndNum, lastPageIndex);
+        int endNumber = Math.min(tmpEndNum, totalPageAmount);
+
+        return pageNumberStartToZero ?
+                endNumber - 1 : endNumber;
     }
 }
