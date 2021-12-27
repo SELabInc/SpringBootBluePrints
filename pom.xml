@@ -120,13 +120,19 @@
         <!-- Database End -->
 
 
+        <!-- logging start -->
         <!-- hibernate log print -->
         <dependency>
             <groupId>org.bgee.log4jdbc-log4j2</groupId>
             <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>1.16</version>
         </dependency>
-
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.6</version>
+        </dependency>
+        <!-- logging end -->
 
         <!-- thymeleaf -->
         <dependency>

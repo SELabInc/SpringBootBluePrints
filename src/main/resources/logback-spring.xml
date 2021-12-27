@@ -6,6 +6,28 @@
 
     <property name="LOG_FILE" value="./logs"/>
 
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+<!--        <destination>${logging.logstash.url}</destination>-->
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <pattern>
+                    <pattern>{"serviceID":"${spring.application.name}"}</pattern>
+                </pattern>
+                <timestamp />
+                <!--<version />-->
+                <context />
+                <threadName />
+                <logLevel />
+                <message />
+                <loggerName />
+                <logstashMarkers />
+                <stackTrace />
+                <callerData />
+            </providers>
+        </encoder>
+    </appender>
 
     <logger name="com.selab.springbootblueprints" level="debug"/>
 
@@ -25,6 +47,7 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGSTASH"/>
         <appender-ref ref="FILE"/>
     </root>
 
