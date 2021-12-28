@@ -6,9 +6,9 @@ let view;
 let map;
 
 $(function () {
-    const baseLayers = baseLayerListGenerator();
+    const baseLayer = vworldBaseLayersGenerator();
 
-    map = mapGenerator(baseLayers);
+    map = mapGenerator(baseLayer);
 
     const static_layer = staticLayerGenerator('korea_sigungu');
 
@@ -19,7 +19,21 @@ $(function () {
     moveZoomLevel();
 });
 
-const baseLayerListGenerator = () => {
+const openStreetMapLayerGenerator = () => {
+    return new ol.layer.Tile({
+        title: 'open_street',
+        layerId: 'open-Street-Map',
+        visible: true,
+        type: 'base',
+        zIndex: 1,
+        source: new ol.source.XYZ({
+            url: 'https://tile.openstreetmap.org/${z}/${x}/${y}.png',
+            crossOrigin: 'anonymous'
+        })
+    })
+}
+
+const vworldBaseLayersGenerator = () => {
     const baseLayerNames = ['Base', 'gray', 'Satellite', 'midnight'];
     let baseLayers = [];
 
@@ -49,11 +63,11 @@ const baseLayerListGenerator = () => {
     return baseLayers;
 }
 
-const mapGenerator = (baseLayers) => {
+const mapGenerator = (baseLayer) => {
     const map = new ol.Map({
         target: 'map',
         layers: [
-            baseLayers[2]
+            baseLayer
         ],
         view: new ol.View({
             center: ol.proj.transform([126.5380517322744, 36.16792263658907], 'EPSG:4326', 'EPSG:3857'),

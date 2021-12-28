@@ -177,9 +177,6 @@
             <artifactId>p6spy-spring-boot-starter</artifactId>
             <version>1.7.1</version>
         </dependency>
-
-
-
         <!-- utilities start -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -195,6 +192,12 @@
 
         <!-- utilities end -->
 
+        <!-- vavr -->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.4</version>
+        </dependency>
     </dependencies>
 
     <build>
