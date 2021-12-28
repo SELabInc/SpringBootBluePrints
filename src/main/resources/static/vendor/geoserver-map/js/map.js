@@ -6,17 +6,17 @@ let view;
 let map;
 
 $(function () {
-    const baseLayer = vworldBaseLayersGenerator();
+    const baseLayer = openStreetMapLayerGenerator();
 
     map = mapGenerator(baseLayer);
 
-    const static_layer = staticLayerGenerator('korea_sigungu');
+    //const static_layer = staticLayerGenerator('korea_sigungu');
 
-    addLayerToMap(static_layer, 'static_layer');
+    //addLayerToMap(static_layer, 'static_layer');
 
-    map.on('singleclick', singleClickCallBackFun);
+    //map.on('singleclick', singleClickCallBackFun);
 
-    moveZoomLevel();
+    //moveZoomLevel();
 });
 
 const openStreetMapLayerGenerator = () => {
@@ -26,10 +26,7 @@ const openStreetMapLayerGenerator = () => {
         visible: true,
         type: 'base',
         zIndex: 1,
-        source: new ol.source.XYZ({
-            url: 'https://tile.openstreetmap.org/${z}/${x}/${y}.png',
-            crossOrigin: 'anonymous'
-        })
+        source: new ol.source.OSM()
     })
 }
 
@@ -72,9 +69,9 @@ const mapGenerator = (baseLayer) => {
         view: new ol.View({
             center: ol.proj.transform([126.5380517322744, 36.16792263658907], 'EPSG:4326', 'EPSG:3857'),
             zoom: 7,
-            extent: ol.proj.transformExtent([122.0, 30.0, 134.0, 45.0], 'EPSG:4326', 'EPSG:3857'),
+            extent: ol.proj.transformExtent([85.0, 5.0, 134.0, 45.0], 'EPSG:4326', 'EPSG:3857'),
             maxZoom: 18,
-            minZoom: 6
+            minZoom: 3
         })
     });
     view = map.getView();
