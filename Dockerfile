@@ -1,20 +1,27 @@
-FROM maven:3.6.3-jdk-11
+FROM maven:3.6.3-jdk-11 as build
+WORKDIR /app
 
-RUN apt update -y && apt install -y librxtx-java
-
-WORKDIR /springbootblueprints
-
-COPY pom.xml /springbootblueprints
-COPY mvnw /springbootblueprints
-COPY mvnw.cmd /springbootblueprints
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
 
 RUN mvn dependency:go-offline
 
-COPY src /springbootblueprints/src
+COPY src src
 RUN mvn package -DskipTests
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-RUN mkdir -p /springbootblueprints/target
 
-EXPOSE 8000
+FROM openjdk:11 as production
+ARG DEPENDENCY=/app/target/dependency
 
-ENTRYPOINT ["java", "-Djava.library.path=/usr/lib/jni", "-jar","target/springbootblueprints-0.0.1-SNAPSHOT.jar"]
+RUN apt update && apt install -y vim htop sysstat
+RUN echo "alias ll='ls -alhF'" >> ~/.bashrc
+
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+
+EXPOSE 11000
+
+ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.selab.springbootblueprints.SpringBootBluePrintsWebApplication"]

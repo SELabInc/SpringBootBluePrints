@@ -131,4 +131,7 @@ local.properties
 *.launch
 ### Eclipse End ###
 
+# log location
+logs/**
+
 

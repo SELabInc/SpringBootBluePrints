@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 public enum Auth implements GrantedAuthority {
 
-	COMMON,
 	MEMBER,
 	ADMIN;
 

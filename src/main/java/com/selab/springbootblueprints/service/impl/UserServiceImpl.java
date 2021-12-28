@@ -6,19 +6,18 @@ import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.Auth;
 import com.selab.springbootblueprints.model.bean.UserDetailsImpl;
-import com.selab.springbootblueprints.model.bean.UserGroupVO;
-import com.selab.springbootblueprints.model.bean.UserVO;
 import com.selab.springbootblueprints.model.entity.QUser;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.UserGroup;
 import com.selab.springbootblueprints.model.entity.UserGroupAuth;
+import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
+import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.repository.UserGroupRepository;
 import com.selab.springbootblueprints.repository.UserRepository;
 import com.selab.springbootblueprints.service.UserService;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,41 +26,38 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-@Service
 @Slf4j
-@Transactional
+@Service
+@RequiredArgsConstructor
+@Transactional(rollbackFor = {Exception.class})
 public class UserServiceImpl implements UserService {
 
-    @Setter(onMethod_ = @Autowired)
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserGroupRepository userGroupRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Setter(onMethod_ = @Autowired)
-    private UserGroupRepository userGroupRepository;
-
-    @Setter(onMethod_ = @Autowired)
-    private PasswordEncoder passwordEncoder;
-
-    private static final String DEFAULT_USER_GROUP_NAME = "NotApproval";
+    private static final String DEFAULT_USER_GROUP_NAME = "None";
 
     @Override
     public void addUser(String name, String password, String groupName)
             throws UserNameValidationException, UserPasswordValidationException, UserGroupNotFoundException {
-        UserGroup group = userGroupRepository.findByName(groupName)
-                .orElseThrow(NoResultException::new);
-        if (group == null) {
-            throw new UserGroupNotFoundException(String.format("Not found user group(name:%s)", groupName));
-        } else if (!User.isValidName(name)) {
+
+        if (!User.isValidName(name)) {
             throw new UserNameValidationException(String.format("User name is not valid {name:%s}", name));
         } else if (!User.isValidPassword(password)) {
             throw new UserPasswordValidationException();
         }
 
+        Optional<UserGroup> groupOptional = userGroupRepository.findByName(groupName);
+        if (groupOptional.isEmpty()) {
+            throw new UserGroupNotFoundException(String.format("Not found user group(name:%s)", groupName));
+        }
+
         String encryptionPassword = passwordEncoder.encode(password);
-        userRepository.save(new User(name, encryptionPassword, group));
+        userRepository.save(new User(name, encryptionPassword, groupOptional.get()));
     }
 
     @Override
@@ -70,14 +66,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserVO getUser(long id) {
-        User user = userRepository.findByIdJoinUserGroup(id)
-                .orElseThrow(NoResultException::new);
-
-        return new UserVO(user);
+    @Transactional(readOnly = true)
+    public Optional<UserVO> getUser(long id) {
+        return userRepository.findUserVoById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean isExist(String username) {
         Predicate predicate = QUser.user
                 .username.eq(username);
@@ -86,15 +81,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<UserPageableInfoVO> getAllUserList(Pageable pageable) {
         return userRepository.findAllBy(pageable);
     }
 
     @Override
-    public void update(long id, String groupName)
-            throws UserPasswordValidationException, UserGroupNotFoundException {
+    public void update(long id, String groupName) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Optional<UserGroup> userGroupOptional = userGroupRepository.findByName(groupName);
+            if (userGroupOptional.isPresent()) {
+                user.setUserGroup(userGroupOptional.get());
+            } else {
+                log.error(String.format("user group field update fail: userGroup(name:%s) not found", groupName));
+            }
 
-        userRepository.update(id, groupName); // TODO bhjung groupNotFound & userNotFound exception throw
+            userRepository.save(user);
+        } else {
+            log.error(String.format("user update fail: user(id:%s) not found", id));
+        }
     }
 
     @Override
@@ -112,7 +119,8 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Override
+    @Override   // for security.core.userdetails.UserDetailsService
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User name not found (name: %s)", username)));
@@ -137,9 +145,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserGroupVO> getUserGroupList() {
-        return userGroupRepository.findAll().stream()
-                .map(UserGroupVO::new)
-                .collect(Collectors.toList());
+        return userGroupRepository.findAllBy();
     }
 }
