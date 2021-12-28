@@ -98,6 +98,7 @@
             <version>2.9.2</version>
         </dependency>
 
+
         <!-- Database Start -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -118,12 +119,20 @@
         </dependency>
         <!-- Database End -->
 
+
+        <!-- logging start -->
         <!-- hibernate log print -->
         <dependency>
             <groupId>org.bgee.log4jdbc-log4j2</groupId>
             <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>1.16</version>
         </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.6</version>
+        </dependency>
+        <!-- logging end -->
 
         <!-- thymeleaf -->
         <dependency>
@@ -133,25 +142,24 @@
         </dependency>
         
         <!-- https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
-	      <dependency>
-	          <groupId>nz.net.ultraq.thymeleaf</groupId>
-	          <artifactId>thymeleaf-layout-dialect</artifactId>
-	          <version>2.2.2</version>
-	      </dependency>
+		<dependency>
+		    <groupId>nz.net.ultraq.thymeleaf</groupId>
+		    <artifactId>thymeleaf-layout-dialect</artifactId>
+		    <version>2.2.2</version>
+		</dependency>
 		
-	      <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
-	      <dependency>
-	          <groupId>org.thymeleaf.extras</groupId>
-	          <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-	          <version>3.0.4.RELEASE</version>
-	      </dependency>
+		<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		    <version>3.0.4.RELEASE</version>
+		</dependency>
 		
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -163,13 +171,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-	    
         <!-- p6spy -->
         <dependency>
             <groupId>com.github.gavlyukovskiy</groupId>
             <artifactId>p6spy-spring-boot-starter</artifactId>
             <version>1.7.1</version>
         </dependency>
+
+
 
         <!-- utilities start -->
         <dependency>
@@ -183,6 +192,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
         </dependency>
+
         <!-- utilities end -->
 
     </dependencies>

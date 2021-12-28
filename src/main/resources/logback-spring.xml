@@ -1,58 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds" debug="true">
     <!-- use Spring default values -->
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/logback/base.xml -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <property name="LOG_ROOT_DIRECTORY" value="./logs"/>
+    <property name="LOG_FILE" value="./logs"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern><!-- use Spring default values -->
-            <charset>UTF8</charset>
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+<!--        <destination>${logging.logstash.url}</destination>-->
+        <destination>192.168.100.2:6000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <pattern>
+                    <pattern>{"serviceID":"${spring.application.name}"}</pattern>
+                </pattern>
+                <timestamp />
+                <!--<version />-->
+                <context />
+                <threadName />
+                <logLevel />
+                <message />
+                <loggerName />
+                <logstashMarkers />
+                <stackTrace />
+                <callerData />
+            </providers>
         </encoder>
     </appender>
-
-    <appender name="RollingFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_ROOT_DIRECTORY}/web/server-log.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>${FILE_LOG_PATTERN}</Pattern><!-- use Spring default values -->
-        </encoder>
-
-        <rollingPolicy
-                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 10 MegaBytes -->
-            <fileNamePattern>${LOG_ROOT_DIRECTORY}/app/server-log-%d{yyyy-MM-dd}.%i.log.gz
-            </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-    </appender>
-
 
     <logger name="com.selab.springbootblueprints" level="debug"/>
 
     <logger name="org.springframework.web" level="info"/>
     <logger name="org.springframework.transaction" level="trace"/>
     <logger name="org.hibernate.SQL" level="info"/>
-    <logger name="org.hibernate.type" level="trace"/>
     <logger name="org.apache.tomcat" level="info"/>
 
-    <logger name="jdbc" level="off"/>
-    <logger name="jdbc.sqlonly" level="off"/>
-    <logger name="jdbc.sqltiming" level="off"/>
-    <logger name="jdbc.audit" level="off"/>
-    <logger name="jdbc.resultset" level="off"/>
-    <logger name="jdbc.resultsettable" level="debug"/>
-    <logger name="jdbc.connection" level="off"/>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
