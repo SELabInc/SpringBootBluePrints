@@ -22,14 +22,8 @@ public class TaskSchedulerConfig {
         threadPoolTaskScheduler.setThreadNamePrefix("task-scheduler-");
         threadPoolTaskScheduler.initialize();
 
-        ScheduledFuture<?> scheduledFuture = setSampleTask(threadPoolTaskScheduler);
-
-        // if you want to stop this
-//        boolean cancelSuccessFlag = scheduledFuture.cancel(false);
-//        if (!cancelSuccessFlag) {
-//            log.warn("scheduled task cancel fail: maybe already canceled");
-//        }
-
+        setSampleTask(threadPoolTaskScheduler);
+        
         return threadPoolTaskScheduler;
     }
 
