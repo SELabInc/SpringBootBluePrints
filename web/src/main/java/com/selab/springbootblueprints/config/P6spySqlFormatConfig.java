@@ -8,9 +8,7 @@ import org.hibernate.engine.jdbc.internal.FormatStyle;
 
 public class P6spySqlFormatConfig implements MessageFormattingStrategy {
 
-    private final String STATEMENT_SQL_MESSAGE_FORMAT = "#%s | url: %s | connectionID: %s | category: %s | elapsed: %sms\n" +
-            "\t%s\n";
-
+    private final String STATEMENT_SQL_MESSAGE_FORMAT = "#%s | url: %s | connectionID: %s | category: %s | elapsed: %sms\n\t%s\n";
     private final String EITHER_CATEGORY_MESSAGE_FORMAT = "#%s | url: %s | connectionID: %s | category: %s | prepared: %s | sql: %s | elapsed: %sms";
 
     @Override
