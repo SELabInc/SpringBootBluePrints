@@ -2,18 +2,22 @@ FROM maven:3.6.3-jdk-11 as build
 WORKDIR /app
 
 COPY pom.xml .
+COPY ./web/pom.xml ./web/pom.xml
+COPY ./api/pom.xml ./api/pom.xml
 COPY mvnw .
 COPY .mvn .mvn
 
 RUN mvn dependency:go-offline
 
-COPY src src
+COPY ./web/src ./web/src
+COPY ./api/src ./api/src
 RUN mvn package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN mkdir -p ./web/target/dependency && (cd ./web/target/dependency; jar -xf ../*.jar)
+RUN ($aa ls; echo $aa) && (cd web/target/dependency; $aa ls; echo $aa)
 
 
 FROM openjdk:11 as production
-ARG DEPENDENCY=/app/target/dependency
+ARG DEPENDENCY=/app/web/target/dependency
 
 RUN apt update && apt install -y vim htop sysstat
 RUN echo "alias ll='ls -alhF'" >> ~/.bashrc

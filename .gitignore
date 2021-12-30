@@ -1,8 +1,6 @@
 HELP.md
-target/
 bin/
 *.mwb.bak
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
 src/main/resources/application-personal.properties
@@ -47,6 +45,10 @@ src/main/resources/application-personal.yml
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
