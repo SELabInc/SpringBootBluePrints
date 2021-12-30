@@ -1,4 +1,4 @@
-package com.selab.springbootblueprints.model.bean;
+package com.selab.springbootblueprints.lib.commonutil.paginate;
 
 public class Paginate {
 
@@ -25,7 +25,9 @@ public class Paginate {
     }
 
     public int getStartNumber() {
-        return currentPageNumber - (currentPageNumber % paginateSize);
+        int startNumber = currentPageNumber - (currentPageNumber % paginateSize);
+        return pageNumberStartToZero ?
+                startNumber : startNumber + 1;
     }
 
     public int getEndNumber() {

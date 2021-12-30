@@ -22,6 +22,12 @@
             <artifactId>api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.selab</groupId>
+            <artifactId>commonUtil</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Modules End -->
 
         <dependency>
@@ -147,18 +153,6 @@
             <version>2.9.2</version>
         </dependency>
         <!-- swagger end -->
-
-        <!-- utilities start -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <!-- utilities end -->
     </dependencies>
 
     <build>

@@ -23,6 +23,7 @@
     </properties>
 
     <modules>
+        <module>lib</module>
         <module>api</module>
         <module>web</module>
     </modules>
@@ -30,19 +31,7 @@
     <!-- 하위 모듈에서 dependencies에 선택적으로 의존성을 명시하는 경우 공통에서 가져다 씀 -->
     <dependencyManagement>
         <dependencies>
-            <!-- utilities start -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.11</version>
-            </dependency>
 
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.11.0</version>
-            </dependency>
-            <!-- utilities end -->
         </dependencies>
     </dependencyManagement>
 

@@ -8,11 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="web" />
+        <module name="commonUtil" />
         <module name="api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="api" target="11" />
+      <module name="commonUtil" target="11" />
+      <module name="lib" target="11" />
       <module name="springbootblueprints" target="11" />
       <module name="web" target="11" />
     </bytecodeTargetLevel>
@@ -20,7 +23,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api" options="-parameters" />
+      <module name="commonUtil" options="" />
       <module name="core" options="-parameters" />
+      <module name="lib" options="-parameters" />
       <module name="springbootblueprints" options="-parameters" />
       <module name="web" options="-parameters" />
     </option>
