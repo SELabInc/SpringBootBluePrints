@@ -1,12 +1,12 @@
 package com.selab.springbootblueprints.controller;
 
+import com.selab.springbootblueprints.lib.commonutil.paginate.Paginate;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
 import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.service.UserService;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
-import com.selab.springbootblueprints.model.bean.Paginate;
 import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
 import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import lombok.RequiredArgsConstructor;
