@@ -2,20 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>INSPINIA | Dashboard</title>
-
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/font-awesome/css/font-awesome.css}">
-
-
-    <link rel="stylesheet" th:href="@{/vendor/toastr/toastr.min.css}">
-
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/animate.css}">
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/style.css}">
-
+    <th:block th:replace="inspinia/fragments/inspiniaCommonHead ::inspiniaHead"></th:block>
 </head>
 
 <body>
@@ -68,7 +55,7 @@
                         <div class="m-t-md">
                             <p>Check the Dashboard v.4 with top navigation layout</p>
                             <div class="p-lg ">
-                                <a href="dashboard_4.html"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/dashboard4_2.jpg" alt=""></a>
+                                <a th:href="@{/inspinia/samplePage2}"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/dashboard4_2.jpg" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -90,7 +77,7 @@
                         <div class="m-t-md">
                             <p>Check the Dashboard v.4 with basic layout</p>
                             <div class="p-lg">
-                                <a href="dashboard_4_1.html"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/dashboard4_1.jpg" alt=""></a>
+                                <a th:href="@{/inspinia/samplePage1}"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/dashboard4_1.jpg" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -112,7 +99,7 @@
                         <div class="m-t-md">
                             <p>Check the Outlook view in in full height page</p>
                             <div class="p-lg ">
-                                <a href="full_height.html"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/full_height.jpg" alt=""></a>
+                                <a th:href="@{/inspinia/samplePage1}"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/full_height.jpg" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -136,7 +123,7 @@
                         <div class="m-t-md">
                             <p>Check the off canvas menu on example article page</p>
                             <div class="p-lg">
-                                <a href="off_canvas_menu.html"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/full_height.jpg" alt=""></a>
+                                <a th:href="@{/inspinia/samplePage1}"><img class="img-fluid img-shadow" src="http://webapplayers.com/inspinia_admin-v2.9.3/img/full_height.jpg" alt=""></a>
                             </div>
                         </div>
                     </div>
@@ -146,36 +133,7 @@
     </div>
     <div class="footer" th:replace="inspinia/fragments/defaultFooter :: inspiniaFooter"></div>
 </div>
-
-
-<!-- Mainly scripts -->
-<script th:src="@{/vendor/inspinia/js/jquery-3.1.1.min.js}"></script>
-<script th:src="@{/vendor/inspinia/js/popper.min.js}"></script>
-<script th:src="@{/vendor/inspinia/js/bootstrap.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-
-<!-- Flot -->
-<script th:src="@{/vendor/flot/jquery.flot.js}"></script>
-
-<!-- Custom and plugin javascript -->
-<script th:src="@{/vendor/inspinia/js/inspinia.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/pace/pace.min.js}"></script>
-
-
-<!-- jQuery UI -->
-<script th:src="@{/vendor/jquery-ui/jquery-ui.min.js}"></script>
-
-<!-- Sparkline demo data  -->
-<!--<script src="js/demo/sparkline-demo.js"></script>-->
-
-<!-- ChartJS-->
-<script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
-
-<!-- Toastr -->
-<script th:src="@{/vendor/toastr/toastr.min.js}"></script>
-
-
+<th:block th:replace="inspinia/fragments/inspiniaCommonScript :: inspiniaScript"></th:block>
 <script>
     $(document).ready(function () {
         // doSome

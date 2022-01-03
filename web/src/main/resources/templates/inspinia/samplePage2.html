@@ -3,20 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>INSPINIA | Dashboard</title>
-
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/font-awesome/css/font-awesome.css}">
-
-
-    <link rel="stylesheet" th:href="@{/vendor/toastr/toastr.min.css}">
-
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/animate.css}">
-    <link rel="stylesheet" th:href="@{/vendor/inspinia/css/style.css}">
-
+    <th:block th:replace="inspinia/fragments/inspiniaCommonHead ::inspiniaHead"></th:block>
 </head>
 
 <body class="top-navigation">
@@ -257,35 +244,7 @@
 
     </div>
 </div>
-
-<!-- Mainly scripts -->
-<script th:src="@{/vendor/inspinia/js/jquery-3.1.1.min.js}"></script>
-<script th:src="@{/vendor/inspinia/js/popper.min.js}"></script>
-<script th:src="@{/vendor/inspinia/js/bootstrap.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
-
-<!-- Flot -->
-<script th:src="@{/vendor/flot/jquery.flot.js}"></script>
-
-<!-- Custom and plugin javascript -->
-<script th:src="@{/vendor/inspinia/js/inspinia.js}"></script>
-<script th:src="@{/vendor/inspinia/js/plugins/pace/pace.min.js}"></script>
-
-
-<!-- jQuery UI -->
-<script th:src="@{/vendor/jquery-ui/jquery-ui.min.js}"></script>
-
-<!-- Sparkline demo data  -->
-<!--<script src="js/demo/sparkline-demo.js"></script>-->
-
-<!-- ChartJS-->
-<script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
-
-<!-- Toastr -->
-<script th:src="@{/vendor/toastr/toastr.min.js}"></script>
-
-
+<th:block th:replace="inspinia/fragments/inspiniaCommonScript :: inspiniaScript"></th:block>
 <script>
     $(document).ready(function () {
         // doSome

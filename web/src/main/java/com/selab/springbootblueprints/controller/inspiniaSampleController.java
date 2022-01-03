@@ -12,12 +12,12 @@ public class inspiniaSampleController {
     @RequestMapping("/samplePage1")
     public String getSample1() {
 
-        return "/inspinia/sample";
+        return "inspinia/samplePage1";
     }
 
     @RequestMapping("/samplePage2")
     public String getSample2() {
 
-        return "/inspinia/home";
+        return "inspinia/samplePage2";
     }
 }
