@@ -1,6 +1,5 @@
 package com.selab.springbootblueprints.service.impl;
 
-import com.querydsl.core.types.Predicate;
 import com.selab.springbootblueprints.exception.UserGroupNotFoundException;
 import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
@@ -10,7 +9,6 @@ import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.Auth;
 import com.selab.springbootblueprints.model.bean.UserDetailsImpl;
-import com.selab.springbootblueprints.model.entity.QUser;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.UserGroup;
 import com.selab.springbootblueprints.model.entity.UserGroupAuth;
@@ -74,10 +72,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean isExist(String username) {
-        Predicate predicate = QUser.user
-                .username.eq(username);
 
-        return userRepository.exists(predicate);
+        return userRepository.findByUsername(username)
+                .isPresent();
     }
 
     @Override

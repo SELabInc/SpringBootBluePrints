@@ -1,7 +1,6 @@
 package com.selab.springbootblueprints.service;
 
 import com.selab.springbootblueprints.model.bean.Auth;
-import com.selab.springbootblueprints.model.entity.QUser;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.UserGroup;
 import com.selab.springbootblueprints.model.entity.UserGroupAuth;
@@ -214,8 +213,11 @@ public class UserServiceTests {
     @Test
     public void isExistTest() {
         //given
-        when(userRepository.exists(QUser.user.username.eq(EXIST_USER_NAME))).thenReturn(true);
-        when(userRepository.exists(QUser.user.username.eq(NON_EXIST_USER_NAME))).thenReturn(false);
+        User existUser = new User();
+        existUser.setId(EXIST_USER_ID);
+        existUser.setUsername(EXIST_USER_NAME);
+        when(userRepository.findByUsername(EXIST_USER_NAME)).thenReturn(Optional.of(existUser));
+        when(userRepository.findByUsername(NON_EXIST_USER_NAME)).thenReturn(Optional.empty());
 
         //test
         Assertions.assertTrue(service.isExist(EXIST_USER_NAME));
