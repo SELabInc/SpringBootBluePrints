@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="inspinia/fragments/commonHead ::inspiniaHead"></th:block>
+    <th:block th:replace="inspinia/fragments/layout/commonHead ::inspiniaHead"></th:block>
 </head>
 
 <body>
 <div id="wrapper">
-    <nav class="navbar-default navbar-static-side" role="navigation" th:replace="inspinia/fragments/defaultSidebar :: inspiniaSidebar"></nav>
-    <div id="page-wrapper" class="gray-bg dashbard-1" th:replace="inspinia/fragments/defaultTop :: inspiniaTopBar"></div>
+    <nav class="navbar-default navbar-static-side" role="navigation" th:replace="inspinia/fragments/layout/defaultSidebar :: inspiniaSidebar"></nav>
+    <div id="page-wrapper" class="gray-bg dashbard-1" th:replace="inspinia/fragments/layout/defaultTop :: inspiniaTopBar"></div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Layouts</h2>
@@ -131,9 +131,9 @@
             </div>
         </div>
     </div>
-    <div class="footer" th:replace="inspinia/fragments/defaultFooter :: inspiniaFooter"></div>
+    <div class="footer" th:replace="inspinia/fragments/layout/defaultFooter :: inspiniaFooter"></div>
 </div>
-<th:block th:replace="inspinia/fragments/commonScript :: inspiniaScript"></th:block>
+<th:block th:replace="inspinia/fragments/layout/commonScript :: inspiniaScript"></th:block>
 <script>
     $(document).ready(function () {
         // doSome

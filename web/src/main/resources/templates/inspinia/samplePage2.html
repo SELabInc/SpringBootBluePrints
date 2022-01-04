@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html>
 <head>
-    <th:block th:replace="inspinia/fragments/commonHead ::inspiniaHead"></th:block>
+    <th:block th:replace="inspinia/fragments/layout/commonHead ::inspiniaHead"></th:block>
 </head>
 
 <body class="top-navigation">
@@ -11,7 +11,7 @@
 <div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom white-bg">
-            <nav class="navbar navbar-expand-lg navbar-static-top" role="navigation" th:replace="inspinia/fragments/topNavCentered :: inspiniaTopNavCentered"></nav>
+            <nav class="navbar navbar-expand-lg navbar-static-top" role="navigation" th:replace="inspinia/fragments/layout/topNavCentered :: inspiniaTopNavCentered"></nav>
         </div>
         <div class="wrapper wrapper-content">
             <div class="container">
@@ -240,11 +240,11 @@
             </div>
 
         </div>
-        <div class="footer" th:replace="inspinia/fragments/defaultFooter :: inspiniaFooter"></div>
+        <div class="footer" th:replace="inspinia/fragments/layout/defaultFooter :: inspiniaFooter"></div>
 
     </div>
 </div>
-<th:block th:replace="inspinia/fragments/commonScript :: inspiniaScript"></th:block>
+<th:block th:replace="inspinia/fragments/layout/commonScript :: inspiniaScript"></th:block>
 <script>
     $(document).ready(function () {
         // doSome
