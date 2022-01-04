@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <th:block th:replace="inspinia/fragments/inspiniaCommonHead ::inspiniaHead"></th:block>
+    <th:block th:replace="inspinia/fragments/commonHead ::inspiniaHead"></th:block>
 </head>
 
 <body>
@@ -133,7 +133,7 @@
     </div>
     <div class="footer" th:replace="inspinia/fragments/defaultFooter :: inspiniaFooter"></div>
 </div>
-<th:block th:replace="inspinia/fragments/inspiniaCommonScript :: inspiniaScript"></th:block>
+<th:block th:replace="inspinia/fragments/commonScript :: inspiniaScript"></th:block>
 <script>
     $(document).ready(function () {
         // doSome
