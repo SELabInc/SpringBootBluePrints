@@ -5,7 +5,7 @@
 <head>
     <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">BLUE PRINTS</title>
     <!-- 공통 css, js, meta tag -->
-    <th:block th:include="~{fragments/layout/commonHead}"></th:block>
+    <th:block th:include="~{adminLTE/fragments/layout/commonHead}"></th:block>
 
     <th:block layout:fragment="headContentBeforeThemeStyle"></th:block>
     <!-- Theme style -->
@@ -21,11 +21,11 @@
         </div>
 
         <!-- Navbar -->
-        <th:block th:include="~{fragments/layout/defaultNavbar}"></th:block>
+        <th:block th:include="~{adminLTE/fragments/layout/defaultNavbar}"></th:block>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <th:block th:include="~{fragments/layout/defaultSidebar}"></th:block>
+        <th:block th:include="~{adminLTE/fragments/layout/defaultSidebar}"></th:block>
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -46,7 +46,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <th:block th:include="~{fragments/layout/defaultFooter}"></th:block>
+        <th:block th:include="~{adminLTE/fragments/layout/defaultFooter}"></th:block>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -56,7 +56,7 @@
     </div>
     <!-- ./wrapper -->
     <!-- 공통 javascript -->
-    <th:block th:replace="~{fragments/layout/commonScript}"></th:block>
+    <th:block th:replace="~{adminLTE/fragments/layout/commonScript}"></th:block>
 
     <!-- page content javascript -->
     <th:block layout:fragment="pageCustomScript"></th:block>
