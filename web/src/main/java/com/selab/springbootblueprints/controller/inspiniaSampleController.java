@@ -20,4 +20,10 @@ public class inspiniaSampleController {
 
         return "inspinia/samplePage2";
     }
+
+    @RequestMapping("/samplePage3")
+    public String getSample3() {
+
+        return "inspinia/samplePage3";
+    }
 }
