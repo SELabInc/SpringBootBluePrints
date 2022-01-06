@@ -24,6 +24,7 @@
 
     <modules>
         <module>lib</module>
+        <module>p6spy</module>
         <module>api</module>
         <module>web</module>
     </modules>
