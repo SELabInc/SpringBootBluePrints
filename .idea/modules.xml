@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib/commonUtil/lib/commonUtil.iml" filepath="$PROJECT_DIR$/lib/commonUtil/lib/commonUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/commonUtil/commonUtil.iml" filepath="$PROJECT_DIR$/lib/commonUtil/commonUtil.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/p6spy/p6spy.iml" filepath="$PROJECT_DIR$/p6spy/p6spy.iml" />
       <module fileurl="file://$PROJECT_DIR$/springbootblueprints.iml" filepath="$PROJECT_DIR$/springbootblueprints.iml" />
