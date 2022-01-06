@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <th:block th:replace="inspinia/fragments/layout/commonHead ::inspiniaHead"></th:block>
-</head>
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{inspinia/layout/defaultLayout}">
 
-<body>
-<div id="wrapper">
-    <nav class="navbar-default navbar-static-side" role="navigation" th:replace="inspinia/fragments/layout/defaultSidebar :: inspiniaSidebar"></nav>
-    <div id="page-wrapper" class="gray-bg dashbard-1" th:replace="inspinia/fragments/layout/defaultTop :: inspiniaTopBar"></div>
+<!-- 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+
+<div layout:fragment="content">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Layouts</h2>
@@ -131,13 +130,8 @@
             </div>
         </div>
     </div>
-    <div class="footer" th:replace="inspinia/fragments/layout/defaultFooter :: inspiniaFooter"></div>
 </div>
-<th:block th:replace="inspinia/fragments/layout/commonScript :: inspiniaScript"></th:block>
-<script>
-    $(document).ready(function () {
-        // doSome
-    })
-</script>
-</body>
+<!--  고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+</th:block>
 </html>
