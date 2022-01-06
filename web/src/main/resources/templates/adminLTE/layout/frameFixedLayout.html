@@ -5,8 +5,8 @@
 <head>
     <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">BLUE PRINTS</title>
     <!-- 공통 css, js, meta tag -->
-    <th:block th:include="~{adminLTE/fragments/layout/commonHead}"></th:block>
-
+<!--    <th:block th:include="~{adminLTE/fragments/layout/commonHead}"></th:block>-->
+    <th:block th:replace="adminLTE/fragments/layout/commonHead ::adminLTEHead"></th:block>
     <th:block layout:fragment="headContentBeforeThemeStyle"></th:block>
     <!-- Theme style -->
     <link rel="stylesheet" th:href="@{/vendor/admin-lte/css/adminlte.min.css}">
