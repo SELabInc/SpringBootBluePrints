@@ -4,6 +4,8 @@ WORKDIR /app
 COPY pom.xml .
 COPY ./web/pom.xml ./web/pom.xml
 COPY ./api/pom.xml ./api/pom.xml
+COPY ./lib/pom.xml ./lib/pom.xml
+COPY ./lib/commonUtil/pom.xml ./lib/commonUtil/pom.xml
 COPY mvnw .
 COPY .mvn .mvn
 
@@ -11,6 +13,8 @@ RUN mvn dependency:go-offline
 
 COPY ./web/src ./web/src
 COPY ./api/src ./api/src
+COPY ./lib/commonUtil/src ./lib/commonUtil/src
+
 RUN mvn package -DskipTests
 RUN mkdir -p ./web/target/dependency && (cd ./web/target/dependency; jar -xf ../*.jar)
 RUN ($aa ls; echo $aa) && (cd web/target/dependency; $aa ls; echo $aa)
