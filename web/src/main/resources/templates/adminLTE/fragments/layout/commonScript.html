@@ -1,8 +1,33 @@
-<!-- jQuery -->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<!-- AdminLTE App -->
-<script th:src="@{/vendor/admin-lte/js/adminlte.min.js}"></script>
-<!-- Bootstrap -->
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:fragment="adminLTEScript">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <th:block th:switch="${resourceType}">
+        <th:block th:case="wan">
+            <!-- jQuery -->
+            <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js}"></script>
+            <!-- AdminLTE App -->
+            <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/js/adminlte.min.js}"></script>
+            <!-- Bootstrap -->
+            <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js}"></script>
 
-<script th:src="@{/js/ajaxSetup.js}"></script>
+            <script th:src="@{/js/ajaxSetup.js}"></script>
+        </th:block>
+        <th:block th:case="lan">
+            <!-- jQuery -->
+            <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+            <!-- AdminLTE App -->
+            <script th:src="@{/vendor/admin-lte/js/adminlte.min.js}"></script>
+            <!-- Bootstrap -->
+            <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+            <script th:src="@{/js/ajaxSetup.js}"></script>
+        </th:block>
+    </th:block>
+</th:block>
+</html>
