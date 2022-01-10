@@ -18,8 +18,7 @@
       <module name="commonUtil" target="11" />
       <module name="lib" target="11" />
       <module name="p6spy" target="11" />
-      <module name="p6spy-old" target="11" />
-      <module name="springbootblueprints" target="11" />
+      <module name="spring-boot-blueprints" target="11" />
       <module name="web" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -30,8 +29,7 @@
       <module name="core" options="-parameters" />
       <module name="lib" options="-parameters" />
       <module name="p6spy" options="-parameters" />
-      <module name="p6spy-old" options="-parameters" />
-      <module name="springbootblueprints" options="-parameters" />
+      <module name="spring-boot-blueprints" options="-parameters" />
       <module name="web" options="-parameters" />
     </option>
   </component>

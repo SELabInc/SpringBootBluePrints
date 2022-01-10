@@ -1,19 +1,27 @@
 package com.selab.springbootblueprints.p6spy;
 
-import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.env.spi.AnsiSqlKeywords;
 import org.hibernate.engine.jdbc.internal.Formatter;
 import org.hibernate.internal.util.StringHelper;
+import org.springframework.boot.ansi.AnsiColor;
 
 import java.util.*;
 
+@Slf4j
+@Builder
+@RequiredArgsConstructor
 public class CustomMultiLineFormatter implements Formatter {
 
-    private static final Set<String> BEGIN_CLAUSES = new HashSet<String>();
-    private static final Set<String> END_CLAUSES = new HashSet<String>();
-    private static final Set<String> LOGICAL = new HashSet<String>();
-    private static final Set<String> QUANTIFIERS = new HashSet<String>();
-    private static final Set<String> DML = new HashSet<String>();
-    private static final Set<String> MISC = new HashSet<String>();
+    private static final Set<String> BEGIN_CLAUSES = new HashSet<>();
+    private static final Set<String> END_CLAUSES = new HashSet<>();
+    private static final Set<String> LOGICAL = new HashSet<>();
+    private static final Set<String> QUANTIFIERS = new HashSet<>();
+    private static final Set<String> DML = new HashSet<>();
+    private static final Set<String> MISC = new HashSet<>();
+    private static final Set<String> HIGHLIGHTING_KEYWORDS = new HashSet<>(AnsiSqlKeywords.INSTANCE.sql2003());
 
     static {
         BEGIN_CLAUSES.add("left");
@@ -50,119 +58,139 @@ public class CustomMultiLineFormatter implements Formatter {
 
         MISC.add("select");
         MISC.add("on");
+
+        HIGHLIGHTING_KEYWORDS.addAll(Arrays.asList("KEY", "SEQUENCE", "CASCADE", "INCREMENT"));
     }
 
     private static final String INDENT_STRING = "    ";
     private static final String INITIAL = System.lineSeparator() + INDENT_STRING;
+    private static final String SYMBOLS_AND_WS = "=><!+-*/()',.|&`\"?" + StringHelper.WHITESPACE;
+
+    private final AnsiColor keywordColor;
+    private final AnsiColor quotedColor;
+    private final AnsiColor stringColor;
 
     @Override
     public String format(String source) {
-        return new CustomMultiLineFormatter.FormatProcess(source).perform();
+        FormatProcess formatProcess = new CustomMultiLineFormatter.FormatProcess(source, keywordColor, quotedColor, stringColor);
+
+        return formatProcess.perform();
     }
 
     private static class FormatProcess {
-        boolean beginLine = true;
-        boolean afterBeginBeforeEnd;
-        boolean afterByOrSetOrFromOrSelect;
-        boolean afterOn;
-        boolean afterBetween;
-        boolean afterInsert;
-        boolean afterSelect;
-        int inFunction;
-        int parensSinceSelect;
-        private LinkedList<Integer> parenCounts = new LinkedList<Integer>();
-        private LinkedList<Boolean> afterByOrFromOrSelects = new LinkedList<Boolean>();
+        private final String keywordColorEscape;
+        private final String quotedColorEscape;
+        private final String stringColorEscape;
+        private final String colorResetEscape = "\u001b[0m";
 
-        int indent = 1;
+        private boolean quoted;
+        private boolean string;
 
-        StringBuilder result = new StringBuilder();
-        StringTokenizer tokens;
-        String lastToken;
-        String token;
-        String lcToken;
+        private boolean beginLine = true;
+        private boolean afterBeginBeforeEnd;
+        private boolean afterByOrSetOrFromOrSelect;
+        private boolean afterOn;
+        private boolean afterBetween;
+        private boolean afterInsert;
+        private boolean afterSelect;
+        private int inFunction;
+        private int parensSinceSelect;
+        private final LinkedList<Integer> parenCounts = new LinkedList<>();
+        private final LinkedList<Boolean> afterByOrFromOrSelects = new LinkedList<>();
 
-        public FormatProcess(String sql) {
-            tokens = new StringTokenizer(
-                    sql,
-                    "()+*/-=<>'`\"[]," + StringHelper.WHITESPACE,
-                    true
-            );
+        private int indent = 1;
+
+        private final StringBuilder result = new StringBuilder();
+        private final StringTokenizer tokenizer;
+
+        private String lastLowCaseToken;
+        private String token;
+        private String lowCaseToken;
+
+
+        public FormatProcess(String sql, AnsiColor keywordColor, AnsiColor quotedColor, AnsiColor stringColor) {
+            this.tokenizer = new StringTokenizer(sql, SYMBOLS_AND_WS, true);
+            this.keywordColorEscape = generateEscape(keywordColor);
+            this.quotedColorEscape = generateEscape(quotedColor);
+            this.stringColorEscape = generateEscape(stringColor);
+        }
+
+        public static String generateEscape(AnsiColor color) {
+            return String.format("\u001b[%sm", color.toString());
         }
 
         public String perform() {
 
             result.append(INITIAL);
 
-            while (tokens.hasMoreTokens()) {
-                token = tokens.nextToken();
-                lcToken = token.toLowerCase(Locale.ROOT);
+            while (tokenizer.hasMoreTokens()) {
+                token = tokenizer.nextToken();
 
-                switch (token) {
-                    case "'": {
-                        String t;
-                        do {
-                            t = tokens.nextToken();
-                            token += t;
-                        }
-                        // cannot handle single quotes
-                        while (!"'".equals(t) && tokens.hasMoreTokens());
-                        break;
+
+                if (token.equals("`") || token.equals("'") || token.equals("\"") || token.equals("[")) {
+
+                    switch (token) {
+                        case "[":
+                        case "'":
+                        case "\"":
+                            string = true;
+                            break;
+                        case "`":
+                            quoted = true;
+                            break;
+                        default:
+                            log.error(String.format("token is in quotation marks but not flagged (quote: %s )", token));
                     }
-                    case "\"": {
-                        String t;
-                        do {
-                            t = tokens.nextToken();
-                            token += t;
+
+                    StringBuilder tokenBuilder = new StringBuilder(token);
+                    String breakToken = token.equals("[") ? "]" : token;
+                    while (tokenizer.hasMoreTokens()) {
+                        String tmpToken = tokenizer.nextToken();
+                        tokenBuilder.append(tmpToken);
+
+                        if (breakToken.equals(tmpToken)) {
+                            break;
                         }
-                        while (!"\"".equals(t) && tokens.hasMoreTokens());
-                        break;
                     }
-                    // SQL Server uses "[" and "]" to escape reserved words
-                    // see SQLServerDialect.openQuote and SQLServerDialect.closeQuote
-                    case "[": {
-                        String t;
-                        do {
-                            t = tokens.nextToken();
-                            token += t;
-                        }
-                        while (!"]".equals(t) && tokens.hasMoreTokens());
-                        break;
-                    }
+
+                    token = tokenBuilder.toString();
                 }
 
-                if (afterByOrSetOrFromOrSelect && ",".equals(token)) {
+                lowCaseToken = token.toLowerCase(Locale.ROOT);
+
+                if (afterByOrSetOrFromOrSelect && ",".equals(this.token)) {
                     commaAfterByOrFromOrSelect();
-                } else if (afterOn && ",".equals(token)) {
+                } else if (afterOn && ",".equals(this.token)) {
                     commaAfterOn();
-                } else if ("(".equals(token)) {
+                } else if ("(".equals(this.token)) {
                     openParen();
-                } else if (")".equals(token)) {
+                } else if (")".equals(this.token)) {
                     closeParen();
-                } else if (BEGIN_CLAUSES.contains(lcToken)) {
+                } else if (BEGIN_CLAUSES.contains(lowCaseToken)) {
                     beginNewClause();
-                } else if (END_CLAUSES.contains(lcToken)) {
+                } else if (END_CLAUSES.contains(lowCaseToken)) {
                     endNewClause();
-                } else if ("select".equals(lcToken)) {
+                } else if ("select".equals(lowCaseToken)) {
                     select();
-                } else if (DML.contains(lcToken)) {
+                } else if (DML.contains(lowCaseToken)) {
                     updateOrInsertOrDelete();
-                } else if ("values".equals(lcToken)) {
+                } else if ("values".equals(lowCaseToken)) {
                     values();
-                } else if ("on".equals(lcToken)) {
+                } else if ("on".equals(lowCaseToken)) {
                     on();
-                } else if (afterBetween && lcToken.equals("and")) {
+                } else if (afterBetween && lowCaseToken.equals("and")) {
                     misc();
                     afterBetween = false;
-                } else if (LOGICAL.contains(lcToken)) {
+                } else if (LOGICAL.contains(lowCaseToken)) {
                     logical();
-                } else if (isWhitespace(token)) {
+                } else if (isWhitespace(this.token)) {
                     white();
                 } else {
                     misc();
                 }
 
-                if (!isWhitespace(token)) {
-                    lastToken = lcToken;
+                if (!isWhitespace(this.token)) {
+                    lastLowCaseToken = lowCaseToken;
                 }
 
             }
@@ -186,7 +214,7 @@ public class CustomMultiLineFormatter implements Formatter {
         }
 
         private void logical() {
-            if ("end".equals(lcToken)) {
+            if ("end".equals(lowCaseToken)) {
                 indent--;
             }
             newline();
@@ -204,7 +232,7 @@ public class CustomMultiLineFormatter implements Formatter {
 
         private void misc() {
             out();
-            if ("between".equals(lcToken)) {
+            if ("between".equals(lowCaseToken)) {
                 afterBetween = true;
             }
             if (afterInsert) {
@@ -212,7 +240,7 @@ public class CustomMultiLineFormatter implements Formatter {
                 afterInsert = false;
             } else {
                 beginLine = false;
-                if ("case".equals(lcToken)) {
+                if ("case".equals(lowCaseToken)) {
                     indent++;
                 }
             }
@@ -228,10 +256,10 @@ public class CustomMultiLineFormatter implements Formatter {
             out();
             indent++;
             beginLine = false;
-            if ("update".equals(lcToken)) {
+            if ("update".equals(lowCaseToken)) {
                 newline();
             }
-            if ("insert".equals(lcToken)) {
+            if ("insert".equals(lowCaseToken)) {
                 afterInsert = true;
             }
         }
@@ -248,7 +276,23 @@ public class CustomMultiLineFormatter implements Formatter {
         }
 
         private void out() {
-            result.append(token);
+            String highlightedToken = highlighting(token);
+            result.append(highlightedToken);
+        }
+
+        private String highlighting(String token) {
+            String result = token;
+            if (string) {
+                string = false;
+                result = stringColorEscape + token + colorResetEscape;
+            } else if (quoted) {
+                quoted = false;
+                result = quotedColorEscape + token + colorResetEscape;
+            } else if (HIGHLIGHTING_KEYWORDS.contains(token.toUpperCase())) {
+                result = keywordColorEscape + token.toUpperCase() + colorResetEscape;
+            }
+
+            return result;
         }
 
         private void endNewClause() {
@@ -261,14 +305,14 @@ public class CustomMultiLineFormatter implements Formatter {
                 newline();
             }
             out();
-            if (!"union".equals(lcToken)) {
+            if (!"union".equals(lowCaseToken)) {
                 indent++;
             }
             newline();
             afterBeginBeforeEnd = false;
-            afterByOrSetOrFromOrSelect = "by".equals(lcToken)
-                    || "set".equals(lcToken)
-                    || "from".equals(lcToken);
+            afterByOrSetOrFromOrSelect = "by".equals(lowCaseToken)
+                    || "set".equals(lowCaseToken)
+                    || "from".equals(lowCaseToken);
             afterSelect = !afterSelect || afterByOrSetOrFromOrSelect;
         }
 
@@ -315,7 +359,7 @@ public class CustomMultiLineFormatter implements Formatter {
         }
 
         private void openParen() {
-            if (isFunctionName(lastToken) || inFunction > 0) {
+            if (isFunctionName(lastLowCaseToken) || inFunction > 0) {
                 inFunction++;
             }
             beginLine = false;
