@@ -4,6 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY ./web/pom.xml ./web/pom.xml
 COPY ./api/pom.xml ./api/pom.xml
+COPY ./p6spy/pom.xml ./p6spy/pom.xml
 COPY ./lib/pom.xml ./lib/pom.xml
 COPY ./lib/commonUtil/pom.xml ./lib/commonUtil/pom.xml
 COPY mvnw .
@@ -13,6 +14,7 @@ RUN mvn dependency:go-offline
 
 COPY ./web/src ./web/src
 COPY ./api/src ./api/src
+COPY ./p6spy/src ./p6spy/src
 COPY ./lib/commonUtil/src ./lib/commonUtil/src
 
 RUN mvn package -DskipTests
