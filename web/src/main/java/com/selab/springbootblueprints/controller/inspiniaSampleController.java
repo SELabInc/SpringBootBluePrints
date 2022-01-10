@@ -28,4 +28,10 @@ public class inspiniaSampleController {
         return "inspinia/samplePage2";
     }
 
+    @RequestMapping("/login")
+    public String getSampleLogin() {
+
+        return "inspinia/login";
+    }
+
 }
