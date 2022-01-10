@@ -11,6 +11,7 @@ import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
 import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class UserManagementController {
 
     private final UserService userService;
 
+    @Value("${network.area}")
+    private String resourceType;
+
     @GetMapping("/table")
     public ModelAndView getUserTable( @RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size) {
@@ -45,6 +49,7 @@ public class UserManagementController {
 
         modelAndView.addObject("userPage", userPage);
         modelAndView.addObject("paginate", paginate);
+        modelAndView.addObject("resourceType", resourceType);
 
         return modelAndView;
     }
@@ -61,6 +66,7 @@ public class UserManagementController {
 
         modelAndView.addObject("user", userVO);
         modelAndView.addObject("userGroups", userGroups);
+        modelAndView.addObject("resourceType", resourceType);
 
         return modelAndView;
     }
