@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <th:block th:replace="inspinia/fragments/layout/commonHead ::inspiniaHead"></th:block>
+</head>
+
+<body>
+  <div id="wrapper">
+      <nav class="navbar-default navbar-static-side" role="navigation" th:replace="inspinia/fragments/layout/defaultSidebar :: inspiniaSidebar"></nav>
+      <div id="page-wrapper" class="gray-bg dashbard-1" th:replace="inspinia/fragments/layout/defaultNavbar :: inspiniaTopBar"></div>
+      <div layout:fragment="content"></div>
+      <div class="footer" th:replace="inspinia/fragments/layout/defaultFooter :: inspiniaFooter"></div>
+  </div>
+  <th:block th:replace="inspinia/fragments/layout/commonScript :: inspiniaScript"></th:block>
+<script>
+  $(document).ready(function () {
+    // doSome
+  })
+</script>
+</body>
+</html>

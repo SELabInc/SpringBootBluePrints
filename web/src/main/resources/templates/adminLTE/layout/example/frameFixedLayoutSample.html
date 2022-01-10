@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{adminLTE/layout/frameFixedLayout}">
+
+<th:block layout:fragment="beforeThemeStyle">
+    <!-- link some css, this block contents is deployed in head tag before theme style sheet -->
+    <link rel="stylesheet" th:href="@{/vendor/daterangepicker/daterangepicker.css}">
+</th:block>
+<head>
+    <title>Sample</title>
+    <! -- link some css, append -->
+</head>
+<body>
+<th:block layout:fragment="bodyContentHeader">
+    <h1 class="m-0">Sample Page</h1>
+</th:block>
+
+<th:block layout:fragment="bodyContent">
+    <div class="row">
+        <div class="col-6 col-lg-2 font-weight-bold text-primary">D</div>
+        <div class="col-6 col-lg-2 font-weight-bold text-primary">O</div>
+        <div class="col-3 col-lg-2 font-weight-bold text-primary">S</div>
+        <div class="col-3 col-lg-2 font-weight-bold text-primary">O</div>
+        <div class="col-3 col-lg-2 font-weight-bold text-primary">M</div>
+        <div class="col-3 col-lg-2 font-weight-bold text-primary">E</div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="pageCustomScript">
+    <!-- include some plugin -->
+    <script th:src="@{/vendoer/moment/moment.min.js}"></script>
+
+    <script>
+        $(document).ready(function () {
+            // doSome
+        })
+    </script>
+</th:block>
+
+
+<th:block layout:fragment="pageCustomCss">
+
+</th:block>
+
+</body>
+</html>
