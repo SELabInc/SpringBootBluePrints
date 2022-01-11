@@ -6,15 +6,6 @@ bin/
 src/main/resources/application-personal.properties
 src/main/resources/application-personal.yml
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 ### IntelliJ IDEA ###
 # https://intellij-support.jetbrains.com/hc/en-us/articles/206544839 참고할 것
 
@@ -60,8 +51,8 @@ target/
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
-# *.iml
 # *.ipr
+*.iml
 
 # CMake
 cmake-build-*/
@@ -126,14 +117,21 @@ local.properties
 .settings/
 .loadpath
 
+
 # External tool builders
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
 *.launch
+
+## STS append ##
+.apt_generated
+.factorypath
+.settings
+.springBeans
+.sts4-cache
+
 ### Eclipse End ###
 
 # log location
 logs/**
-
-
