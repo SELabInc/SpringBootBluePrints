@@ -24,6 +24,7 @@
 
     <modules>
         <module>lib</module>
+        <module>p6spy</module>
         <module>api</module>
         <module>web</module>
     </modules>
@@ -31,7 +32,23 @@
     <!-- 하위 모듈에서 dependencies에 선택적으로 의존성을 명시하는 경우 공통에서 가져다 씀 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.selab</groupId>
+                <artifactId>api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
 
+            <dependency>
+                <groupId>com.selab</groupId>
+                <artifactId>commonUtil</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.selab</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

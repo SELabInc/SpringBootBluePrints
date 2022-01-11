@@ -9,7 +9,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.selab</groupId>
     <artifactId>web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -20,13 +19,16 @@
         <dependency>
             <groupId>com.selab</groupId>
             <artifactId>api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.selab</groupId>
             <artifactId>commonUtil</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.selab</groupId>
+            <artifactId>p6spy</artifactId>
         </dependency>
         <!-- Modules End -->
 
@@ -125,12 +127,6 @@
             <groupId>org.bgee.log4jdbc-log4j2</groupId>
             <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>1.16</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.gavlyukovskiy</groupId>
-            <artifactId>p6spy-spring-boot-starter</artifactId>
-            <version>1.7.1</version>
         </dependency>
 
         <dependency>

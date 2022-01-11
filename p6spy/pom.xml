@@ -3,27 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>lib</artifactId>
+        <artifactId>spring-boot-blueprints</artifactId>
         <groupId>com.selab</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>commonUtil</artifactId>
     <packaging>jar</packaging>
+
+    <artifactId>p6spy</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.gavlyukovskiy</groupId>
+            <artifactId>p6spy-spring-boot-starter</artifactId>
+            <version>1.7.1</version>
         </dependency>
     </dependencies>
 </project>

@@ -23,6 +23,13 @@
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+            <version>1.18.22</version>
+        </dependency>
+
         <!-- junit 5, unit test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
