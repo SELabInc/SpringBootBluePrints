@@ -4,11 +4,11 @@
     <!-- https://github.com/spring-projects/spring-boot/blob/main/spring-boot-project/spring-boot/src/main/resources/org/springframework/boot/logging/logback/base.xml -->
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+    <property resource="application.properties" />
     <property name="LOG_FILE" value="./logs"/>
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-<!--        <destination>${logging.logstash.url}</destination>-->
-        <destination>192.168.100.2:6000</destination>
+        <destination>${logging.logstash.url}</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc />
