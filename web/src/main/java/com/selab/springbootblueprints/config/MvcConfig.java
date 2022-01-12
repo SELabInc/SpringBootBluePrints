@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Value("${network.area}")
+    @Value("${network.area:wan}")
     private String resourceType;
 
     @Override
