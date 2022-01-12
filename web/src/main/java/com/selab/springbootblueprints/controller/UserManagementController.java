@@ -1,17 +1,16 @@
 package com.selab.springbootblueprints.controller;
 
+import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.lib.commonutil.paginate.Paginate;
+import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
+import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import com.selab.springbootblueprints.model.entity.User;
 import com.selab.springbootblueprints.model.entity.projection.UserGroupVO;
 import com.selab.springbootblueprints.model.entity.projection.UserPageableInfoVO;
 import com.selab.springbootblueprints.model.entity.projection.UserVO;
 import com.selab.springbootblueprints.service.UserService;
-import com.selab.springbootblueprints.exception.UserPasswordValidationException;
-import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
-import com.selab.springbootblueprints.model.bean.UserUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,9 +33,6 @@ public class UserManagementController {
 
     private final UserService userService;
 
-    @Value("${network.area}")
-    private String resourceType;
-
     @GetMapping("/table")
     public ModelAndView getUserTable( @RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size) {
@@ -49,7 +45,6 @@ public class UserManagementController {
 
         modelAndView.addObject("userPage", userPage);
         modelAndView.addObject("paginate", paginate);
-        modelAndView.addObject("resourceType", resourceType);
 
         return modelAndView;
     }
@@ -66,7 +61,6 @@ public class UserManagementController {
 
         modelAndView.addObject("user", userVO);
         modelAndView.addObject("userGroups", userGroups);
-        modelAndView.addObject("resourceType", resourceType);
 
         return modelAndView;
     }
