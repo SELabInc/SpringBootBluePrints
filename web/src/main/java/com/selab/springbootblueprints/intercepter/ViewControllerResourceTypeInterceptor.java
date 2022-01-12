@@ -16,7 +16,7 @@ public class ViewControllerResourceTypeInterceptor implements HandlerInterceptor
     public final String resourceType;
 
     public String resourceTypeCheck(){
-        if (resourceType.contains("wan")||resourceType.contains("lan")){
+        if (resourceType.equals("wan")||resourceType.equals("lan")){
             return resourceType;
         }
         return "wan";
