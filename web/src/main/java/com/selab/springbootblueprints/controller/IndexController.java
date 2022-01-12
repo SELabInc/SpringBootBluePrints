@@ -1,13 +1,12 @@
 package com.selab.springbootblueprints.controller;
 
-import com.selab.springbootblueprints.service.UserService;
 import com.selab.springbootblueprints.exception.UserNameValidationException;
 import com.selab.springbootblueprints.exception.UserPasswordValidationException;
 import com.selab.springbootblueprints.model.bean.PostUserResponseStatus;
+import com.selab.springbootblueprints.service.UserService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,12 +23,8 @@ public class IndexController {
     @Setter(onMethod_ = @Autowired)
     private UserService userService;
 
-    @Value("${network.area}")
-    private String resourceType;
-
     @RequestMapping("/")
     public String getRoot(Model model) {
-        model.addAttribute("resourceType",resourceType);
         return "index";
     }
 
