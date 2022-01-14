@@ -1,17 +1,10 @@
-<!DOCTYPE html>
+<!DOCTYPE html>th:replace
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="@{${templateStyle}+'/layout/headOnlyLayout'}">
+      layout:decorator="@{${templateStyle}+'/layout/sidebarLayout'}">
 
 <head>
     <title>Sample</title>
-
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" th:href="@{vendor/overlayScrollbars/css/OverlayScrollbars.min.css}">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" th:href="@{vendor/daterangepicker/daterangepicker.css}">
-    <!-- summernote -->
-    <link rel="stylesheet" th:href="@{vendor/summernote/summernote-bs4.min.css}">
 </head>
 <body>
 <div layout:fragment="content">
