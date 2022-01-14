@@ -27,6 +27,16 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping("/optionTest")
+    public String getStyleOptionTestPage() {
+        return "styleOptionTestPage";
+    }
+
+    @RequestMapping("/optionTes2")
+    public String getStyleOptionTestPageSideBar() {
+        return "styleOptionTestPageSideBar";
+    }
+
     @GetMapping("/register")
     public void getSignUp() {
 
