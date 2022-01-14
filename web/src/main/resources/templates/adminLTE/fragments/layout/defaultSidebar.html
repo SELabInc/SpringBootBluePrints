@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="adminLTESidebar">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
         <img th:src="@{/vendor/admin-lte/img/AdminLTELogo.png}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -737,6 +737,12 @@
                     <a href="/inspinia/samplePage2" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
                         <p>inspinia head menu page </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/optionTest" class="nav-link">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>style option test page </p>
                     </a>
                 </li>
             </ul>
