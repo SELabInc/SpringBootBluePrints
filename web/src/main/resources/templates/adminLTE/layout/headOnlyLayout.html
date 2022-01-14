@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">BLUE PRINTS</title>
-	<!-- 공통 css, js, meta tag -->
-	<th:block th:include="~{adminLTE/fragments/layout/commonHead}"></th:block>
-
-	<th:block layout:fragment="headContentBeforeThemeStyle"></th:block>
-	<!-- Theme style -->
-	<link rel="stylesheet" th:href="@{/vendor/admin-lte/css/adminlte.min.css}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Top Navigation</title>
+    <th:block th:replace="adminLTE/fragments/layout/commonHead ::adminLTEHead"></th:block>
 </head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <th:block th:replace="adminLTE/fragments/layout/headOnlyLayoutNavbar ::adminLTEHeadOnlyNavBar"></th:block>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div layout:fragment="content">
+
+        </div>
+    </div>
+    <footer class="main-footer" th:replace="adminLTE/fragments/layout/defaultFooter :: adminLTEFooter"></footer>
+</div>
+<!-- ./wrapper -->
+<th:block th:replace="adminLTE/fragments/layout/commonScript :: adminLTEScript"></th:block>
+<script th:src="@{/vendor/admin-lte/js/demo.js}"></script>
+<script>
+    $(document).ready(function () {
+        // doSome
+    })
+</script>
+</body>
 </html>
