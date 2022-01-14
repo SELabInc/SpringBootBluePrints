@@ -12,9 +12,12 @@ public class MvcConfig implements WebMvcConfigurer {
     @Value("${network.area:wan}")
     private String resourceType;
 
+    @Value("${template.style}")
+    private String templateStyle;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ViewControllerResourceTypeInterceptor(resourceType))
+        registry.addInterceptor(new ViewControllerResourceTypeInterceptor(resourceType,templateStyle))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login","/logout","/loginFail","/accessDenied","/vendor/**","/js/**","/css/**");
 
