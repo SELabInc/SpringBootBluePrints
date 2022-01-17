@@ -17,15 +17,17 @@ public class ViewControllerResourceTypeInterceptor implements HandlerInterceptor
 
     public final String templateStyle;
 
-    public String resourceTypeCheck(){
-        if (resourceType.equalsIgnoreCase("wan")||resourceType.equalsIgnoreCase("lan")){
+    public String resourceTypeCheck() {
+
+        if (resourceType.equalsIgnoreCase("wan") || resourceType.equalsIgnoreCase("lan")) {
             return resourceType;
         }
         return "wan";
     }
 
-    public String templateTypeCheck(){
-        if (templateStyle.equalsIgnoreCase("adminlte")||templateStyle.equalsIgnoreCase("inspinia")){
+    public String templateTypeCheck() {
+
+        if (templateStyle.equalsIgnoreCase("adminlte") || templateStyle.equalsIgnoreCase("inspinia")) {
             return templateStyle;
         }
         return "inspinia";
@@ -35,7 +37,7 @@ public class ViewControllerResourceTypeInterceptor implements HandlerInterceptor
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-        if(modelAndView != null){
+        if (modelAndView != null) {
             modelAndView.addObject("resourceType",resourceTypeCheck());
             modelAndView.addObject("templateStyle",templateTypeCheck());
         }
