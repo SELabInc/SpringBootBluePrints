@@ -12,7 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Value("${network.area:wan}")
     private String resourceType;
 
-    @Value("${template.style}")
+    @Value("${template.style:inspinia}")
     private String templateStyle;
 
     @Override
