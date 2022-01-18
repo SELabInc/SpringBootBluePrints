@@ -1,5 +1,6 @@
 package com.selab.springbootblueprints.p6spy;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import java.util.*;
 
 @Slf4j
-@Builder
+@Builder(access = AccessLevel.PUBLIC)
 @RequiredArgsConstructor
 public class CustomMultiLineFormatter implements Formatter {
 
