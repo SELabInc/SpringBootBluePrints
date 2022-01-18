@@ -8,12 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="p6spy" />
-        <module name="commonUtil" />
+        <module name="common-util" />
         <module name="example" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="commonUtil" target="11" />
+      <module name="common-util" target="11" />
       <module name="example" target="11" />
       <module name="lib" target="11" />
       <module name="p6spy" target="11" />
@@ -22,7 +22,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="commonUtil" options="" />
+      <module name="common-util" options="" />
       <module name="example" options="-parameters" />
       <module name="lib" options="-parameters" />
       <module name="p6spy" options="-parameters" />

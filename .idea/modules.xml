@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/lib/commonUtil/commonUtil.iml" filepath="$PROJECT_DIR$/lib/commonUtil/commonUtil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/common-util/common-util.iml" filepath="$PROJECT_DIR$/lib/common-util/common-util.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/p6spy/p6spy.iml" filepath="$PROJECT_DIR$/p6spy/p6spy.iml" />
