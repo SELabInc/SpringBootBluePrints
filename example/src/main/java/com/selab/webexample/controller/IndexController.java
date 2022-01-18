@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +23,18 @@ public class IndexController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String getRoot(Model model) {
+    public String getRoot() {
         return "index";
+    }
+
+    @RequestMapping("/optionTest")
+    public String getStyleOptionTestPage() {
+        return "styleOptionTestPage";
+    }
+
+    @RequestMapping("/optionTes2")
+    public String getStyleOptionTestPageSideBar() {
+        return "styleOptionTestPageSideBar";
     }
 
     @GetMapping("/register")

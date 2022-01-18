@@ -2,7 +2,6 @@ package com.selab.webexample.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
@@ -11,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class inspiniaSampleController {
 
     @RequestMapping("/samplePage1")
-    public String getSample1(Model model) {
+    public String getSample1() {
 
         return "inspinia/samplePage1";
     }
 
     @RequestMapping("/samplePage2")
-    public String getSample2(Model model) {
+    public String getSample2() {
 
         return "inspinia/samplePage2";
     }

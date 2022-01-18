@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:replace="adminLTE/fragments/layout/commonHead ::adminLTEHead"></th:block>
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{vendor/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{vendor/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{vendor/summernote/summernote-bs4.min.css}">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" th:src="@{/vendor/admin-lte/img/AdminLTELogo.png}" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light" th:replace="adminLTE/fragments/layout/defaultNavbar :: adminLTESidebarLayoutNavBar"></nav>
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" th:replace="adminLTE/fragments/layout/defaultSidebar :: adminLTESidebar"></aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <div layout:fragment="content"></div>
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" th:replace="adminLTE/fragments/layout/defaultFooter :: adminLTEFooter"></footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<th:block th:replace="adminLTE/fragments/layout/commonScript :: adminLTEScript"></th:block>
+<script>
+    $(document).ready(function () {
+        $.widget.bridge('uibutton', $.ui.button)
+    })
+</script>
+
+</body>
+</html>
