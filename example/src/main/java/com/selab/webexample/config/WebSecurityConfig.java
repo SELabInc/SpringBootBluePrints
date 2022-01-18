@@ -19,12 +19,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    private final String rememberMeKey = "bhjung's remember token value generate key" +
-            "this key must be secure and unique";
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        
+        String rememberMeKey = "bhjung's remember token value generate key" +
+                "this key must be secure and unique";
+
         http.authorizeRequests()
         	.antMatchers("/", "/login", "/register", "/accessDenied", "/api/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/**").permitAll()
