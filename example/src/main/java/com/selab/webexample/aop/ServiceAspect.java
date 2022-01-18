@@ -14,7 +14,7 @@ import java.time.Instant;
 @Component
 public class ServiceAspect {
 
-    @Around("execution(* com.selab.springbootblueprints.service.*.*(..))")
+    @Around("execution(* com.selab.webexample.service.*.*(..))")
     public Object doAroundService(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         Signature proceedingSignature = proceedingJoinPoint.getSignature();
 
