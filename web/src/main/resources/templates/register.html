@@ -2,11 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{adminLTE/layout/headOnlyLayout}">
-<th:block layout:fragment="headContentBeforeThemeStyle">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" th:href="@{/vendor/icheck-bootstrap/icheck-bootstrap.min.css}">
-</th:block>
+      layout:decorate="~{adminLTE/layout/loginRegisterLayout}">
 <head>
     <title>Registration Page</title>
 </head>
@@ -79,16 +75,6 @@
             <!-- /.form-box -->
         </div><!-- /.card -->
     </div>
-    <!-- /.register-box -->
-
-    <!-- jQuery -->
-    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-    <!-- Bootstrap 4 -->
-    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <!-- AdminLTE App -->
-    <script th:src="@{/vendor/admin-lte/js/adminlte.min.js}"></script>
-
-    <script th:src="@{/js/util/formAjaxFunction.js}"></script>
 
     <script th:inline="javascript">
         $(document).ready(function () {
