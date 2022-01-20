@@ -55,5 +55,11 @@ public class PaginateTests {
         Assertions.assertEquals(paginate.getEndNumber(), 28);
     }
 
-
+    @Test
+    public void noDataTest() {
+        Paginate.setPageNumberStartToZero(false);
+        Paginate paginate = new Paginate(1 , 0, 10);
+        Assertions.assertEquals(paginate.getStartNumber(), 1);
+        Assertions.assertEquals(paginate.getEndNumber(), 1);
+    }
 }

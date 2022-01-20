@@ -16,7 +16,7 @@ public class Paginate {
 
     public Paginate(int currentPageNumber, int totalPageAmount, int paginateSize) {
         this.currentPageNumber = currentPageNumber;
-        this.totalPageAmount = totalPageAmount;
+        this.totalPageAmount = totalPageAmount <= 0 ? 1 : totalPageAmount ;
         this.paginateSize = paginateSize;
     }
 
