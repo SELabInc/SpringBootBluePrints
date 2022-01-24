@@ -20,12 +20,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
+        <nexus.host>localhost:8081</nexus.host>
     </properties>
 
     <modules>
         <module>lib</module>
         <module>p6spy</module>
-        <module>example</module>
     </modules>
 
     <!-- 하위 모듈에서 dependencies에 선택적으로 의존성을 명시하는 경우 공통에서 가져다 씀 -->
@@ -33,7 +33,13 @@
         <dependencies>
             <dependency>
                 <groupId>com.selab</groupId>
-                <artifactId>common-util</artifactId>
+                <artifactId>api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.selab</groupId>
+                <artifactId>commonUtil</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
 
@@ -73,6 +79,14 @@
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -82,5 +96,18 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>selab nexus releases repo</name>
+            <url>http://${nexus.host}/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>selab nexus snapshots repo</name>
+            <url>http://${nexus.host}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
