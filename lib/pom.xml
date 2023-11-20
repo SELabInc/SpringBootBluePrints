@@ -62,15 +62,15 @@
 
     <distributionManagement>
         <repository>
-            <id>nexus-releases</id>
-            <name>selab nexus releases repo</name>
-            <url>https://${nexus.host}/repository/maven-releases/</url>
+            <id>nexus-public</id>
+            <name>selab nexus public repo</name>
+            <url>https://${nexus.host}/repository/maven-public/</url>
         </repository>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>selab nexus snapshots repo</name>
-            <url>https://${nexus.host}/repository/maven-snapshots/</url>
-        </snapshotRepository>
+<!--        <snapshotRepository>
+            <id>nexus-public</id>
+            <name>selab nexus public repo</name>
+            <url>https://${nexus.host}/repository/maven-public/</url>
+        </snapshotRepository>-->
     </distributionManagement>
 
 </project>
