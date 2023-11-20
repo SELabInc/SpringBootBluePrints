@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
-        <nexus.host>localhost:8081</nexus.host>
+        <nexus.host>nexus.selab.cloud</nexus.host>
     </properties>
 
     <modules>
@@ -95,12 +95,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>selab nexus releases repo</name>
-            <url>http://${nexus.host}/repository/maven-releases/</url>
+            <url>https://${nexus.host}/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>selab nexus snapshots repo</name>
-            <url>http://${nexus.host}/repository/maven-snapshots/</url>
+            <url>https://${nexus.host}/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
